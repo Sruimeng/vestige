@@ -4,12 +4,14 @@
  */
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface TimestampProps {
   className?: string;
 }
 
 export function Timestamp({ className = '' }: TimestampProps) {
+  const { t } = useTranslation('common');
   const [time, setTime] = useState<string>('');
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export function Timestamp({ className = '' }: TimestampProps) {
   return (
     <div className={`font-mono text-xs text-hud-text-dim tracking-wider ${className}`}>
       <span className="text-hud-text tabular-nums">{time}</span>
-      <span className="ml-1 text-hud-accent">CN</span>
+      <span className="ml-1 text-hud-accent">{t('hud.timezone')}</span>
     </div>
   );
 }

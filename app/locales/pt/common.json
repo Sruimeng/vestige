@@ -22,6 +22,79 @@
     "delete": "Excluir",
     "edit": "Editar",
     "loading": "Carregando...",
-    "welcome": "Bem-vindo!"
+    "welcome": "Bem-vindo!",
+    "close": "Fechar",
+    "backHome": "Voltar ao início"
+  },
+  "index": {
+    "selectYear": "Selecione um ano",
+    "yearRange": "De 500 a.C. a 2100 d.C.",
+    "previousYear": "Ano anterior",
+    "nextYear": "Próximo ano",
+    "errorTitle": "ERR: FALHA NA SÍNTESE",
+    "errorMessage": "Por favor, tente novamente ou selecione outro ano",
+    "errorRetry": "TENTAR NOVAMENTE",
+    "ce": "d.C.",
+    "bce": "a.C."
+  },
+  "boot": {
+    "projectId": "EPHEMERA.CAPSULE.V1",
+    "initTemporal": "INICIALIZANDO_NÚCLEO_TEMPORAL...",
+    "loadingDatabase": "CARREGANDO_BANCO_DE_DADOS_HISTÓRICO...",
+    "calibrating": "CALIBRANDO_COORDENADAS...",
+    "systemReady": "SISTEMA_PRONTO",
+    "skip": "PULAR →"
+  },
+  "hud": {
+    "projectId": "EPHEMERA.CAPSULE.V1",
+    "coordinates": "COORDS: ANO",
+    "yearBce": "{{year}} a.C.",
+    "yearCe": "{{year}} d.C.",
+    "nominal": "SIS.NOMINAL",
+    "init": "SIS.INIT",
+    "loading": "DADOS.SYNC",
+    "ready": "DADOS.OK",
+    "error": "SIS.ERRO",
+    "timezone": "BR"
+  },
+  "log": {
+    "initSystem": "INIT_SISTEMA...",
+    "scanningCoords": "ESCANEANDO_COORDENADAS_TEMPORAIS...",
+    "yearLock": "ANO_BLOQUEADO: {{year}}",
+    "searchCache": "BUSCANDO_CACHE... FALHA",
+    "initReconstruction": "INIT_PROTOCOLO_RECONSTRUÇÃO...",
+    "connecting": "CONECTANDO_AO_FLUXO_TEMPORAL...",
+    "analyzing": "ANALISANDO_DADOS_HISTÓRICOS...",
+    "extractingSymbols": "EXTRAINDO_SÍMBOLOS_CULTURAIS...",
+    "processingEvents": "PROCESSANDO_EVENTOS: {{count}}/5",
+    "generatingSynthesis": "GERANDO_SÍNTESE...",
+    "callingGeometry": "CHAMANDO_MOTOR_GEOMETRIA...",
+    "meshGeneration": "GERAÇÃO_MALHA_EM_PROGRESSO...",
+    "textureSynthesis": "SÍNTESE_TEXTURA_ATIVA...",
+    "materialCalc": "PROPRIEDADES_MATERIAL_CALCULADAS...",
+    "finalizingModel": "FINALIZANDO_MODELO_3D...",
+    "uploadingArtifact": "ENVIANDO_ARTEFATO...",
+    "verificationComplete": "VERIFICAÇÃO_COMPLETA",
+    "materializationReady": "MATERIALIZAÇÃO_PRONTA",
+    "progress": "RECONSTRUÇÃO",
+    "percent": "{{progress}}%"
+  },
+  "panel": {
+    "tapToExpand": "TOQUE PARA EXPANDIR ↑",
+    "collapse": "↓",
+    "viewArchives": "VER ARQUIVOS",
+    "tapForDetails": "TOQUE PARA DETALHES"
+  },
+  "archives": {
+    "title": "ARQUIVOS HISTÓRICOS",
+    "culturalSymbols": "SÍMBOLOS CULTURAIS",
+    "generatedAt": "Gerado em {{date}}"
+  },
+  "chronometer": {
+    "yearBce": "{{year}} a.C.",
+    "yearCe": "{{year}} d.C."
+  },
+  "year": {
+    "redirecting": "REDIRECIONANDO..."
   }
 }

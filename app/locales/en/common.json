@@ -22,6 +22,79 @@
     "delete": "Delete",
     "edit": "Edit",
     "loading": "Loading...",
-    "welcome": "Welcome to your new app!"
+    "welcome": "Welcome!",
+    "close": "Close",
+    "backHome": "Back to Home"
+  },
+  "index": {
+    "selectYear": "Select a Year",
+    "yearRange": "From 500 BCE to 2100 CE",
+    "previousYear": "Previous Year",
+    "nextYear": "Next Year",
+    "errorTitle": "ERR: SYNTHESIS_FAILURE",
+    "errorMessage": "Please retry or select a different year",
+    "errorRetry": "RETRY",
+    "ce": "CE",
+    "bce": "BCE"
+  },
+  "boot": {
+    "projectId": "EPHEMERA.CAPSULE.V1",
+    "initTemporal": "INITIALIZING_TEMPORAL_CORE...",
+    "loadingDatabase": "LOADING_HISTORICAL_DATABASE...",
+    "calibrating": "CALIBRATING_COORDINATES...",
+    "systemReady": "SYSTEM_READY",
+    "skip": "SKIP →"
+  },
+  "hud": {
+    "projectId": "EPHEMERA.CAPSULE.V1",
+    "coordinates": "COORDS: YEAR",
+    "yearBce": "BCE {{year}}",
+    "yearCe": "CE  {{year}}",
+    "nominal": "SYS.NOMINAL",
+    "init": "SYS.INIT",
+    "loading": "DATA.SYNC",
+    "ready": "DATA.RDY",
+    "error": "SYS.ERROR",
+    "timezone": "UTC"
+  },
+  "log": {
+    "initSystem": "INIT_SYSTEM...",
+    "scanningCoords": "SCANNING_TEMPORAL_COORDINATES...",
+    "yearLock": "YEAR_LOCK_ACQUIRED: {{year}}",
+    "searchCache": "SEARCHING_CACHE... MISS",
+    "initReconstruction": "INIT_RECONSTRUCTION_PROTOCOL...",
+    "connecting": "CONNECTING_TO_TEMPORAL_STREAM...",
+    "analyzing": "ANALYZING_HISTORICAL_DATA...",
+    "extractingSymbols": "EXTRACTING_CULTURAL_SYMBOLS...",
+    "processingEvents": "PROCESSING_EVENTS: {{count}}/5",
+    "generatingSynthesis": "GENERATING_SYNTHESIS...",
+    "callingGeometry": "CALLING_GEOMETRY_ENGINE...",
+    "meshGeneration": "MESH_GENERATION_IN_PROGRESS...",
+    "textureSynthesis": "TEXTURE_SYNTHESIS_ACTIVE...",
+    "materialCalc": "MATERIAL_PROPERTIES_CALCULATED...",
+    "finalizingModel": "FINALIZING_3D_MODEL...",
+    "uploadingArtifact": "UPLOADING_ARTIFACT...",
+    "verificationComplete": "VERIFICATION_COMPLETE",
+    "materializationReady": "MATERIALIZATION_READY",
+    "progress": "RECONSTRUCTION",
+    "percent": "{{progress}}%"
+  },
+  "panel": {
+    "tapToExpand": "TAP TO EXPAND ↑",
+    "collapse": "↓",
+    "viewArchives": "VIEW ARCHIVES",
+    "tapForDetails": "TAP FOR DETAILS"
+  },
+  "archives": {
+    "title": "HISTORICAL ARCHIVES",
+    "culturalSymbols": "CULTURAL SYMBOLS",
+    "generatedAt": "Generated at {{date}}"
+  },
+  "chronometer": {
+    "yearBce": "{{year}} BCE",
+    "yearCe": "{{year}} CE"
+  },
+  "year": {
+    "redirecting": "REDIRECTING..."
   }
 }

@@ -5,6 +5,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router';
 
 import { Chronometer } from '@/components/chronometer';
@@ -19,6 +20,7 @@ import { ArtifactModel, HologramWireframe, PlaceholderSphere, SceneCanvas } from
 import { useTimeCapsule } from '@/hooks/use-time-capsule';
 
 export default function Index() {
+  const { t } = useTranslation();
   const location = useLocation();
   const { year, systemState, capsuleData, progress, setYear } = useTimeCapsule();
   const [isArchivesOpen, setIsArchivesOpen] = useState(false);
@@ -122,20 +124,20 @@ export default function Index() {
                 <button
                   onClick={() => setYear(Math.max(-500, year - 1))}
                   className="btn-hud min-h-[44px] min-w-[44px] flex items-center justify-center text-lg"
-                  aria-label="上一年"
+                  aria-label={t('index.previousYear')}
                 >
                   ←
                 </button>
                 <div className="text-center flex-1">
                   <p className="font-mono text-3xl text-hud-accent tabular-nums">{year}</p>
                   <p className="text-xs text-hud-text-dim">
-                    {year < 0 ? 'BCE' : 'CE'}
+                    {year < 0 ? t('index.bce') : t('index.ce')}
                   </p>
                 </div>
                 <button
                   onClick={() => setYear(Math.min(2100, year + 1))}
                   className="btn-hud min-h-[44px] min-w-[44px] flex items-center justify-center text-lg"
-                  aria-label="下一年"
+                  aria-label={t('index.nextYear')}
                 >
                   →
                 </button>
@@ -187,14 +189,14 @@ export default function Index() {
                 >
                   <div className="hud-panel border-hud-error/30 p-6 text-center">
                     <p className="font-mono text-sm text-hud-error animate-text-glow">
-                      ERR: SYNTHESIS_FAILURE
+                      {t('index.errorTitle')}
                     </p>
-                    <p className="mt-2 text-xs text-hud-text-dim">请稍后重试或选择其他年份</p>
+                    <p className="mt-2 text-xs text-hud-text-dim">{t('index.errorMessage')}</p>
                     <button
                       onClick={() => setYear(year)}
                       className="btn-hud mt-4"
                     >
-                      RETRY
+                      {t('index.errorRetry')}
                     </button>
                   </div>
                 </motion.div>
@@ -224,10 +226,10 @@ export default function Index() {
                 >
                   <div className="text-center">
                     <p className="font-serif text-2xl text-hud-text/80 sm:text-3xl">
-                      选择一个年份
+                      {t('index.selectYear')}
                     </p>
                     <p className="mt-2 text-sm text-hud-text-dim">
-                      从公元前 500 年到公元 2100 年
+                      {t('index.yearRange')}
                     </p>
                     <motion.div
                       animate={{ y: [0, 10, 0] }}

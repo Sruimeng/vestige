@@ -9,6 +9,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ChronometerProps {
   value: number;
@@ -30,6 +31,7 @@ export function Chronometer({
   max = YEAR_MAX,
   className = '',
 }: ChronometerProps) {
+  const { t } = useTranslation('common');
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [velocity, setVelocity] = useState(0);
@@ -159,9 +161,9 @@ export function Chronometer({
   // 格式化年份显示
   const formatYear = (year: number): string => {
     if (year <= 0) {
-      return `${Math.abs(year)} BCE`;
+      return t('chronometer.yearBce', { year: Math.abs(year) });
     }
-    return `${year} CE`;
+    return t('chronometer.yearCe', { year });
   };
 
   // 生成年份列表

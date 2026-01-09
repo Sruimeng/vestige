@@ -13,8 +13,9 @@ async function hydrate() {
     .init({
       ...I18nConfig,
       resources,
+      lng: localStorage.getItem('i18nextLng') || 'zh', // 默认中文
       detection: {
-        order: ['htmlTag', 'navigator'],
+        order: ['localStorage', 'htmlTag', 'navigator'],
         caches: ['localStorage'],
       },
     });

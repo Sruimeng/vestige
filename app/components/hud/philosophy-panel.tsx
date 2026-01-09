@@ -5,6 +5,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { TimeCapsuleData } from '@/types/time-capsule';
 
@@ -15,6 +16,7 @@ interface PhilosophyPanelProps {
 }
 
 export function PhilosophyPanel({ data, onTap, className = '' }: PhilosophyPanelProps) {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
 
   // 移动端：可折叠面板
@@ -35,7 +37,7 @@ export function PhilosophyPanel({ data, onTap, className = '' }: PhilosophyPanel
               <div className="h-2 w-2 rounded-full bg-hud-accent animate-pulse" />
               <span className="font-mono text-lg text-hud-text">{data.year_display}</span>
             </div>
-            <span className="data-label text-[10px]">TAP TO EXPAND ↑</span>
+            <span className="data-label text-[10px]">{t('panel.tapToExpand')}</span>
           </motion.div>
         ) : (
           // 展开状态：完整面板
@@ -56,7 +58,7 @@ export function PhilosophyPanel({ data, onTap, className = '' }: PhilosophyPanel
               onClick={() => setIsExpanded(false)}
               className="absolute right-3 top-3 btn-hud min-h-[32px] min-w-[32px] flex items-center justify-center text-[10px]"
             >
-              ↓
+              {t('panel.collapse')}
             </button>
 
             {/* 年份标题 */}
@@ -90,7 +92,7 @@ export function PhilosophyPanel({ data, onTap, className = '' }: PhilosophyPanel
               }}
               className="mt-3 w-full btn-hud min-h-[40px] text-xs"
             >
-              VIEW ARCHIVES
+              {t('panel.viewArchives')}
             </button>
           </motion.div>
         )}
@@ -137,7 +139,7 @@ export function PhilosophyPanel({ data, onTap, className = '' }: PhilosophyPanel
       </div>
 
       {/* 操作提示 */}
-      <p className="mt-3 data-label text-center text-[10px]">TAP FOR DETAILS</p>
+      <p className="mt-3 data-label text-center text-[10px]">{t('panel.tapForDetails')}</p>
     </motion.div>
   );
 

@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 import type { HistoryEvent, TimeCapsuleData } from '@/types/time-capsule';
 import { CATEGORY_COLORS, CATEGORY_LABELS } from '@/types/time-capsule';
@@ -38,6 +39,8 @@ function EventCard({ event }: { event: HistoryEvent }) {
 }
 
 export function ArchivesSheet({ data, isOpen, onClose }: ArchivesSheetProps) {
+  const { t } = useTranslation();
+
   if (!isOpen) return null;
 
   return (
@@ -68,10 +71,10 @@ export function ArchivesSheet({ data, isOpen, onClose }: ArchivesSheetProps) {
         <div className="border-b border-white/10 px-4 pb-4 sm:px-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="data-label">HISTORICAL ARCHIVES</p>
+              <p className="data-label">{t('archives.title')}</p>
               <h2 className="font-mono text-xl sm:text-2xl text-hud-text">{data.year_display}</h2>
             </div>
-            <button onClick={onClose} className="btn-hud min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="关闭">
+            <button onClick={onClose} className="btn-hud min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label={t('common.close')}>
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -89,7 +92,7 @@ export function ArchivesSheet({ data, isOpen, onClose }: ArchivesSheetProps) {
 
           {/* 底部信息 */}
           <div className="mt-6 border-t border-white/10 pt-4">
-            <p className="data-label mb-2">CULTURAL SYMBOLS</p>
+            <p className="data-label mb-2">{t('archives.culturalSymbols')}</p>
             <div className="flex flex-wrap gap-2">
               {data.symbols.map((symbol, index) => (
                 <span key={index} className="btn-hud">
@@ -99,7 +102,7 @@ export function ArchivesSheet({ data, isOpen, onClose }: ArchivesSheetProps) {
             </div>
 
             <p className="mt-4 text-center text-xs text-hud-text-dim">
-              Generated at {new Date(data.generated_at).toLocaleString()}
+              {t('archives.generatedAt', { date: new Date(data.generated_at).toLocaleString() })}
             </p>
           </div>
         </div>

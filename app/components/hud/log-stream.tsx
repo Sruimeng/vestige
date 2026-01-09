@@ -5,6 +5,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface LogStreamProps {
   year: number;
@@ -40,6 +41,7 @@ function generateHexData(): string {
 }
 
 export function LogStream({ year, progress, className = '' }: LogStreamProps) {
+  const { t } = useTranslation('common');
   const [logs, setLogs] = useState<string[]>([]);
   const [hexStream, setHexStream] = useState<string[]>([]);
 
@@ -111,7 +113,7 @@ export function LogStream({ year, progress, className = '' }: LogStreamProps) {
       {/* 进度条 */}
       <div className="mt-4">
         <div className="mb-1 flex justify-between text-hud-text-dim">
-          <span>RECONSTRUCTION</span>
+          <span>{t('log.progress')}</span>
           <span>{progress}%</span>
         </div>
         <div className="h-0.5 w-full overflow-hidden rounded bg-hud-accent/20">

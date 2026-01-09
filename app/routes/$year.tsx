@@ -7,6 +7,7 @@
  */
 
 import { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import { YEAR_MAX, YEAR_MIN } from '@/types/time-capsule';
@@ -42,6 +43,7 @@ function parseYear(yearStr: string): number | null {
 export default function YearRoute() {
   const params = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation('common');
   const yearParam = params.year as string;
 
   // 解析并验证年份
@@ -63,7 +65,7 @@ export default function YearRoute() {
     <div className="flex h-screen w-screen items-center justify-center bg-canvas">
       <div className="text-center">
         <div className="font-mono text-sm text-hud-text-dim animate-pulse">
-          REDIRECTING...
+          {t('year.redirecting', 'REDIRECTING...')}
         </div>
       </div>
     </div>

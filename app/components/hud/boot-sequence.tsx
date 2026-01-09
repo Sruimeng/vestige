@@ -4,24 +4,26 @@
  */
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface BootSequenceProps {
   onComplete?: () => void;
 }
 
-const BOOT_MESSAGES = [
-  'EPHEMERA.CAPSULE.V1',
-  'INITIALIZING_TEMPORAL_CORE...',
-  'LOADING_HISTORICAL_DATABASE...',
-  'CALIBRATING_COORDINATES...',
-  'SYSTEM_READY',
-];
-
 export function BootSequence({ onComplete }: BootSequenceProps) {
+  const { t } = useTranslation();
   const [currentLine, setCurrentLine] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [showSkip, setShowSkip] = useState(false);
+
+  const bootMessages = useMemo(() => [
+    t('boot.projectId'),
+    t('boot.initTemporal'),
+    t('boot.loadingDatabase'),
+    t('boot.calibrating'),
+    t('boot.systemReady'),
+  ], [t]);
 
   useEffect(() => {
     // 显示跳过按钮
@@ -30,7 +32,7 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
     // 逐行显示消息
     const lineInterval = setInterval(() => {
       setCurrentLine((prev) => {
-        if (prev >= BOOT_MESSAGES.length - 1) {
+        if (prev >= bootMessages.length - 1) {
           clearInterval(lineInterval);
           setTimeout(() => {
             setIsComplete(true);
@@ -46,7 +48,7 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
       clearTimeout(skipTimer);
       clearInterval(lineInterval);
     };
-  }, [onComplete]);
+  }, [onComplete, bootMessages.length]);
 
   const handleSkip = () => {
     setIsComplete(true);
@@ -65,7 +67,7 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
           {/* 启动日志 */}
           <div className="w-full max-w-md px-8">
             <div className="space-y-2 font-mono text-sm">
-              {BOOT_MESSAGES.slice(0, currentLine + 1).map((message, index) => (
+              {bootMessages.slice(0, currentLine + 1).map((message, index) => (
                 <motion.p
                   key={index}
                   initial={{ opacity: 0, x: -10 }}
@@ -78,7 +80,7 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
                   }`}
                 >
                   &gt; {message}
-                  {index === currentLine && index < BOOT_MESSAGES.length - 1 && (
+                  {index === currentLine && index < bootMessages.length - 1 && (
                     <span className="animate-pulse">_</span>
                   )}
                 </motion.p>
@@ -90,7 +92,7 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
               <motion.div
                 className="h-full bg-hud-accent"
                 initial={{ width: 0 }}
-                animate={{ width: `${((currentLine + 1) / BOOT_MESSAGES.length) * 100}%` }}
+                animate={{ width: `${((currentLine + 1) / bootMessages.length) * 100}%` }}
                 transition={{ duration: 0.3 }}
               />
             </div>
@@ -106,7 +108,7 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
                 onClick={handleSkip}
                 className="absolute bottom-8 right-8 btn-hud min-h-[44px] min-w-[44px] safe-area-pb safe-area-px"
               >
-                SKIP →
+                {t('boot.skip')}
               </motion.button>
             )}
           </AnimatePresence>

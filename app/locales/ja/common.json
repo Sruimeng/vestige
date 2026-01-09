@@ -22,6 +22,79 @@
     "delete": "削除",
     "edit": "編集",
     "loading": "読み込み中...",
-    "welcome": "ようこそ！"
+    "welcome": "ようこそ！",
+    "close": "閉じる",
+    "backHome": "ホームに戻る"
+  },
+  "index": {
+    "selectYear": "年を選択",
+    "yearRange": "紀元前500年から西暦2100年まで",
+    "previousYear": "前の年",
+    "nextYear": "次の年",
+    "errorTitle": "ERR: 合成失敗",
+    "errorMessage": "後でもう一度お試しいただくか、別の年を選択してください",
+    "errorRetry": "再試行",
+    "ce": "西暦",
+    "bce": "紀元前"
+  },
+  "boot": {
+    "projectId": "EPHEMERA.CAPSULE.V1",
+    "initTemporal": "時間コア初期化中...",
+    "loadingDatabase": "歴史データベース読み込み中...",
+    "calibrating": "座標を校正中...",
+    "systemReady": "システム準備完了",
+    "skip": "スキップ →"
+  },
+  "hud": {
+    "projectId": "EPHEMERA.CAPSULE.V1",
+    "coordinates": "座標：年",
+    "yearBce": "紀元前 {{year}}",
+    "yearCe": "西暦 {{year}}",
+    "nominal": "システム正常",
+    "init": "システム初期化",
+    "loading": "データ同期",
+    "ready": "データ準備完了",
+    "error": "システムエラー",
+    "timezone": "JP"
+  },
+  "log": {
+    "initSystem": "システム初期化...",
+    "scanningCoords": "時間座標スキャン中...",
+    "yearLock": "年ロック取得：{{year}}",
+    "searchCache": "キャッシュ検索中... ミス",
+    "initReconstruction": "再構築プロトコル初期化...",
+    "connecting": "時間ストリームに接続中...",
+    "analyzing": "歴史データ分析中...",
+    "extractingSymbols": "文化シンボル抽出中...",
+    "processingEvents": "イベント処理中：{{count}}/5",
+    "generatingSynthesis": "合成生成中...",
+    "callingGeometry": "ジオメトリエンジン呼び出し中...",
+    "meshGeneration": "メッシュ生成中...",
+    "textureSynthesis": "テクスチャ合成中...",
+    "materialCalc": "マテリアル計算中...",
+    "finalizingModel": "3Dモデル完成中...",
+    "uploadingArtifact": "アーティファクトアップロード中...",
+    "verificationComplete": "検証完了",
+    "materializationReady": "実体化準備完了",
+    "progress": "再構築",
+    "percent": "{{progress}}%"
+  },
+  "panel": {
+    "tapToExpand": "タップして展開 ↑",
+    "collapse": "↓",
+    "viewArchives": "アーカイブを見る",
+    "tapForDetails": "タップして詳細"
+  },
+  "archives": {
+    "title": "歴史アーカイブ",
+    "culturalSymbols": "文化シンボル",
+    "generatedAt": "生成日時：{{date}}"
+  },
+  "chronometer": {
+    "yearBce": "紀元前 {{year}} 年",
+    "yearCe": "西暦 {{year}} 年"
+  },
+  "year": {
+    "redirecting": "リダイレクト中..."
   }
 }
