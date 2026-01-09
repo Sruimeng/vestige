@@ -104,7 +104,7 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={handleSkip}
-                className="absolute bottom-8 right-8 btn-hud"
+                className="absolute bottom-8 right-8 btn-hud min-h-[44px] min-w-[44px] safe-area-pb safe-area-px"
               >
                 SKIP →
               </motion.button>

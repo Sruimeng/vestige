@@ -118,23 +118,23 @@ export default function Index() {
               className="fixed bottom-4 left-4 right-4 z-40 block sm:hidden safe-area-pb"
             >
               {/* 移动端年份显示 */}
-              <div className="glass-panel flex items-center justify-between p-4">
+              <div className="glass-panel flex items-center justify-between p-3">
                 <button
                   onClick={() => setYear(Math.max(-500, year - 1))}
-                  className="btn-hud px-4 py-2"
+                  className="btn-hud min-h-[44px] min-w-[44px] flex items-center justify-center text-lg"
                   aria-label="上一年"
                 >
                   ←
                 </button>
-                <div className="text-center">
-                  <p className="font-mono text-2xl text-hud-accent tabular-nums">{year}</p>
+                <div className="text-center flex-1">
+                  <p className="font-mono text-3xl text-hud-accent tabular-nums">{year}</p>
                   <p className="text-xs text-hud-text-dim">
                     {year < 0 ? 'BCE' : 'CE'}
                   </p>
                 </div>
                 <button
                   onClick={() => setYear(Math.min(2100, year + 1))}
-                  className="btn-hud px-4 py-2"
+                  className="btn-hud min-h-[44px] min-w-[44px] flex items-center justify-center text-lg"
                   aria-label="下一年"
                 >
                   →
@@ -150,7 +150,7 @@ export default function Index() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="fixed bottom-24 left-4 z-40 w-72 sm:bottom-8 safe-area-pb"
+                  className="fixed bottom-24 left-4 right-4 z-40 sm:bottom-8 sm:right-auto sm:w-72 safe-area-pb"
                 >
                   <LogStream year={year} progress={progress} />
                 </motion.div>
@@ -165,7 +165,7 @@ export default function Index() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 50 }}
                   transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
-                  className="fixed bottom-24 left-1/2 z-40 w-full max-w-md -translate-x-1/2 px-4 sm:bottom-8 safe-area-pb"
+                  className="fixed bottom-24 left-4 right-4 z-40 sm:bottom-8 sm:left-8 sm:right-auto sm:max-w-sm safe-area-pb"
                 >
                   <PhilosophyPanel
                     data={capsuleData}
@@ -183,7 +183,7 @@ export default function Index() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="fixed bottom-24 left-1/2 z-40 w-full max-w-md -translate-x-1/2 px-4 sm:bottom-8 safe-area-pb"
+                  className="fixed bottom-24 left-4 right-4 z-40 sm:bottom-8 sm:left-8 sm:right-auto sm:max-w-sm safe-area-pb"
                 >
                   <div className="hud-panel border-hud-error/30 p-6 text-center">
                     <p className="font-mono text-sm text-hud-error animate-text-glow">
