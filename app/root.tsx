@@ -1,11 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { data, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from 'react-router';
-import { useChangeLanguage } from 'remix-i18next/react';
-import { PreventFlashOnWrongTheme, Theme, ThemeProvider, useTheme } from 'remix-themes';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import { Theme, ThemeProvider, useTheme } from 'remix-themes';
 import 'virtual:uno.css';
-import { i18nCookie, i18nServer } from './.server/i18n.server';
-import { themeSessionResolver } from './.server/theme.server';
-import { Canonical, DefaultErrorBoundary } from './components';
+import { DefaultErrorBoundary } from './components';
 import './root.css';
 
 export const links = () => {
@@ -16,15 +13,6 @@ export const links = () => {
       href: '/favicon.ico',
     },
   ];
-};
-
-export const loader = async ({ request }: any) => {
-  const { getTheme } = await themeSessionResolver(request);
-  const theme = getTheme() || Theme.DARK;
-  const locale = await i18nServer.getLocale(request);
-  const headers = new Headers();
-  headers.append('Set-Cookie', await i18nCookie.serialize(locale));
-  return data({ locale, theme }, { headers });
 };
 
 const App: React.FC = () => {
@@ -38,8 +26,6 @@ const App: React.FC = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <Meta />
         <Links />
-        <PreventFlashOnWrongTheme ssrTheme={Boolean(theme)} />
-        <Canonical />
       </head>
       <body className="select-none">
         <Outlet />
@@ -50,12 +36,18 @@ const App: React.FC = () => {
   );
 };
 
-const AppWithProviders = () => {
-  const { theme, locale } = useLoaderData();
-  useChangeLanguage(locale);
+const getInitialTheme = (): Theme => {
+  if (typeof window !== 'undefined') {
+    const stored = localStorage.getItem('theme') as Theme | null;
+    if (stored === Theme.DARK || stored === Theme.LIGHT) return stored;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? Theme.DARK : Theme.LIGHT;
+  }
+  return Theme.DARK;
+};
 
+const AppWithProviders = () => {
   return (
-    <ThemeProvider specifiedTheme={theme} themeAction="/api/set-theme">
+    <ThemeProvider specifiedTheme={getInitialTheme()} themeAction="">
       <App />
     </ThemeProvider>
   );
@@ -64,7 +56,7 @@ const AppWithProviders = () => {
 export const ErrorBoundary: React.FC = () => {
   try {
     return (
-      <ThemeProvider specifiedTheme={Theme.DARK} themeAction="/api/set-theme">
+      <ThemeProvider specifiedTheme={Theme.DARK} themeAction="">
         <DefaultErrorBoundary />
       </ThemeProvider>
     );

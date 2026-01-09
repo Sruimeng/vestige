@@ -1,2 +1,5 @@
+/**
+ * 类型导出
+ */
+
 export * from './time-capsule';
-export * from './utils';

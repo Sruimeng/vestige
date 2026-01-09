@@ -1,7 +1,14 @@
 ---
 id: index
 type: overview
-related_ids: [constitution, system-overview, doc-standard, technical-debt]
+related_ids:
+  - constitution
+  - system-overview
+  - doc-standard
+  - technical-debt
+  - prd
+  - design-guide
+  - time-capsule-guide
 ---
 
 # 📚 React Router v7 Template 文档中心
@@ -23,6 +30,9 @@ related_ids: [constitution, system-overview, doc-standard, technical-debt]
 | 文档 | 描述 |
 |------|------|
 | [`doc-standard.md`](./guides/doc-standard.md) | LLMDoc 文档规范 |
+| [`prd.md`](./guides/prd.md) | Ephemera: Time Capsule 产品需求文档 |
+| [`design-guide.md`](./guides/design-guide.md) | 深空终端美学设计规范 |
+| [`time-capsule-guide.md`](./guides/time-capsule-guide.md) | Time Capsule API 使用指南 |
 
 ### 📋 参考规范 (Reference)
 
@@ -104,6 +114,7 @@ pnpm lint
 
 | 日期 | 变更 |
 |------|------|
+| 2026-01-08 | 标准化重构 [`prd.md`](./guides/prd.md), [`design-guide.md`](./guides/design-guide.md), [`time-capsule-guide.md`](./guides/time-capsule-guide.md) |
 | 2026-01-07 | 完成技术债务清理，模板已纯洁化 |
 | 2026-01-07 | 更新文档反映实际项目结构 |
 | 2026-01-07 | 创建 [`technical-debt.md`](./reference/technical-debt.md) 技术债务报告 |
@@ -116,3 +127,6 @@ pnpm lint
 - 系统架构: [`system-overview.md`](./architecture/system-overview.md)
 - 文档规范: [`doc-standard.md`](./guides/doc-standard.md)
 - 技术债务: [`technical-debt.md`](./reference/technical-debt.md)
+- 产品需求: [`prd.md`](./guides/prd.md)
+- 设计规范: [`design-guide.md`](./guides/design-guide.md)
+- API 指南: [`time-capsule-guide.md`](./guides/time-capsule-guide.md)
