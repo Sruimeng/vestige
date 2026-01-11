@@ -55,7 +55,8 @@
     "loading": "DATA.SYNC",
     "ready": "DATA.RDY",
     "error": "SYS.ERROR",
-    "timezone": "UTC"
+    "timezone": "UTC",
+    "filter": "FILTER"
   },
   "log": {
     "initSystem": "INIT_SYSTEM...",

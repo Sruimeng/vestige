@@ -33,13 +33,10 @@ export function HUDOverlay({ year, status, isLoading = false }: HUDOverlayProps)
 
       {/* 顶部栏 */}
       <div className="pointer-events-none fixed left-0 right-0 top-0 z-30 flex items-start justify-between p-4 safe-area-pt">
-        {/* 左上：项目标识 + 状态 + 滤镜选择 */}
+        {/* 左上：项目标识 + 状态 */}
         <div className="flex flex-col gap-2">
           <span className="font-mono text-xs text-hud-text-dim tracking-[0.3em]">{t('hud.projectId')}</span>
           <StatusIndicator status={status} />
-          <div className="pointer-events-auto">
-            <FilterSelector />
-          </div>
         </div>
 
         {/* 右上：时间戳 + 语言选择 + 信号 */}
@@ -55,6 +52,11 @@ export function HUDOverlay({ year, status, isLoading = false }: HUDOverlayProps)
       {/* 底部左侧：坐标 */}
       <div className="pointer-events-none fixed bottom-0 left-0 z-30 p-4 safe-area-pb">
         <Coordinates year={year} />
+      </div>
+
+      {/* 滤镜选择器 - 移动端左侧中央，PC端底部中央 */}
+      <div className="pointer-events-auto fixed z-30 p-4 left-0 top-1/2 -translate-y-1/2 safe-area-pl md:left-1/2 md:top-auto md:bottom-0 md:-translate-x-1/2 md:translate-y-0 md:safe-area-pb">
+        <FilterSelector />
       </div>
     </>
   );

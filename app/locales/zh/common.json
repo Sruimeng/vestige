@@ -55,7 +55,8 @@
     "loading": "数据同步",
     "ready": "数据就绪",
     "error": "系统错误",
-    "timezone": "CN"
+    "timezone": "CN",
+    "filter": "滤镜"
   },
   "log": {
     "initSystem": "初始化系统...",
