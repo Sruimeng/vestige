@@ -32,7 +32,14 @@ related_ids:
 | [`doc-standard.md`](./guides/doc-standard.md) | LLMDoc 文档规范 |
 | [`prd.md`](./guides/prd.md) | Ephemera: Time Capsule 产品需求文档 |
 | [`design-guide.md`](./guides/design-guide.md) | 深空终端美学设计规范 |
-| [`time-capsule-guide.md`](./guides/time-capsule-guide.md) | Time Capsule API 使用指南 |
+| [`time-capsule-guide.md`](./guides/time-capsule-guide.md) | Time Capsule API 使用指南 (含 Future Fossils) |
+| [`prd-post-processing.md`](./guides/prd-post-processing.md) | 后处理与风格滤镜系统 PRD |
+
+### 🧠 策略记忆 (Agent Strategies)
+
+| 文档 | 描述 |
+|------|------|
+| [`strategy-blueprint-upgrade.md`](./agent/strategy-blueprint-upgrade.md) | Blueprint 工程蓝图滤镜升级策略 |
 
 ### 📋 参考规范 (Reference)
 
@@ -114,6 +121,7 @@ pnpm lint
 
 | 日期 | 变更 |
 |------|------|
+| 2026-01-12 | 同步 Future Fossils API 支持和滤镜选择器重构 |
 | 2026-01-08 | 标准化重构 [`prd.md`](./guides/prd.md), [`design-guide.md`](./guides/design-guide.md), [`time-capsule-guide.md`](./guides/time-capsule-guide.md) |
 | 2026-01-07 | 完成技术债务清理，模板已纯洁化 |
 | 2026-01-07 | 更新文档反映实际项目结构 |
@@ -130,3 +138,5 @@ pnpm lint
 - 产品需求: [`prd.md`](./guides/prd.md)
 - 设计规范: [`design-guide.md`](./guides/design-guide.md)
 - API 指南: [`time-capsule-guide.md`](./guides/time-capsule-guide.md)
+- 后处理系统: [`prd-post-processing.md`](./guides/prd-post-processing.md)
+- Blueprint 策略: [`strategy-blueprint-upgrade.md`](./agent/strategy-blueprint-upgrade.md)

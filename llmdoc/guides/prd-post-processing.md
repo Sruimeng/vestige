@@ -5,6 +5,7 @@ related_ids:
   - prd
   - design-guide
   - constitution
+  - strategy-blueprint-upgrade
 ---
 
 # Post-Processing PRD
@@ -213,7 +214,62 @@ FILTER claymation:
     - 每帧微小形变
 ```
 
-## 3. 基础后处理管线
+## 3. 滤镜选择器 UI
+
+### 3.1 交互模式
+
+```typescript
+/** 滤镜选择器 - 响应式设计 */
+COMPONENT FilterSelector:
+  IF isMobile:
+    RENDER MobileFilterSelector  // 垂直滑块
+  ELSE:
+    RENDER DesktopFilterSelector // 横向点击列表
+
+/** 移动端滑块选择器 */
+COMPONENT MobileFilterSelector:
+  layout:
+    - position: 左侧中央
+    - size: 32px × 88px
+    - style: 垂直滑动滚轮
+  interaction:
+    - drag: 上下拖拽切换滤镜
+    - snap: 自动吸附到最近项
+    - highlight: 中央选中框高亮
+  visual:
+    - icons: 每个滤镜特征图标 (24px × 24px)
+    - label: 当前滤镜名称显示在右侧
+    - mask: 上下渐变遮罩
+
+/** PC端点击选择器 */
+COMPONENT DesktopFilterSelector:
+  layout:
+    - position: 底部中央
+    - style: 横向滚动列表
+  interaction:
+    - click: 点击切换滤镜
+    - hover: 悬停放大效果
+  visual:
+    - icons: 32px × 32px 特征图标
+    - label: 图标下方显示名称
+    - indicator: 激活项底部圆点指示器
+```
+
+### 3.2 滤镜图标设计
+
+| 滤镜 ID | 图标特征 |
+|---------|---------|
+| `default` | 灰色渐变 + 中央圆点 |
+| `blueprint` | 青色网格线框 (3×3) |
+| `halftone` | 黑色圆点阵列 (半色调) |
+| `ascii` | 绿色终端字符 `>_` |
+| `pixel` | 蓝色像素方块 |
+| `sketch` | 虚线三角形 (铅笔风格) |
+| `glitch` | RGB 色彩分离条纹 |
+| `crystal` | 紫色菱形水晶 |
+| `claymation` | 橙色粘土球 |
+
+## 4. 基础后处理管线
 
 ```
 PIPELINE PostProcessing:

@@ -4,6 +4,7 @@ type: guide
 related_ids:
   - prd
   - design-guide
+  - constitution
 ---
 
 # Time Capsule 使用指南
@@ -13,6 +14,8 @@ related_ids:
 **Time Capsule（时间胶囊）** 是一个"历史在物体中"的功能模块，允许用户查询任意年份（公元前500年到公元2100年）并获得该年份的合成历史物体。
 
 ## 2. 核心类型定义
+
+### 2.1 Time Capsule (历史模式)
 
 ```typescript
 /** 时间胶囊响应数据 */
@@ -38,7 +41,57 @@ interface HistoryEvent {
 }
 
 type EventCategory = 'politics' | 'technology' | 'culture' | 'economy' | 'science';
+```
 
+### 2.2 Future Fossils (未来模式)
+
+```typescript
+/** Future Fossils 响应数据 */
+interface FutureFossilsResponse {
+  data: FutureFossilsData;
+}
+
+interface FutureFossilsData {
+  year: number;
+  year_display: string;
+  mode: FossilMode;          // 'history' | 'misread'
+  events: FossilEvent[];
+  symbols: string[];
+  synthesis: string;
+  philosophy: string;
+  model_url: string;
+  generated_at: string;
+  archaeologist_report?: string;  // Misread 模式特有：外星考古报告
+}
+
+type FossilMode = 'history' | 'misread';
+
+interface FossilEvent {
+  title: string;
+  description: string;
+  category: FossilEventCategory;
+}
+
+type FossilEventCategory = EventCategory | 'ritual' | 'unknown';
+```
+
+### 2.3 统一类型
+
+```typescript
+/** 统一数据类型 (兼容两种 API) */
+type CapsuleData = TimeCapsuleData | FutureFossilsData;
+
+/** 类型守卫 */
+FUNCTION isFutureFossilsData(data: CapsuleData): boolean
+  RETURN 'mode' IN data
+
+FUNCTION isMisreadMode(data: CapsuleData): boolean
+  RETURN isFutureFossilsData(data) AND data.mode === 'misread'
+```
+
+### 2.4 错误响应
+
+```typescript
 /** 错误响应 */
 interface ErrorResponse {
   error: 'invalid_year' | 'generation_failed';
@@ -67,25 +120,47 @@ FUNCTION getTimeCapsule(year: number):
 
 ## 4. API 规范
 
-### 4.1 端点
+### 4.1 端点选择逻辑
 
-| 方法 | 路径 | 描述 |
-|------|------|------|
-| GET | `/api/time-capsule/{year}` | 获取指定年份的时间胶囊 |
+```typescript
+/** 自动选择 API 端点 */
+FUNCTION getApiEndpoint(year: number): string
+  currentYear = getCurrentYear()
 
-### 4.2 路径参数
+  IF year >= currentYear:
+    RETURN `/api/future-fossils/${year}`  // 未来年份
+  ELSE:
+    RETURN `/api/time-capsule/${year}`    // 历史年份
+```
+
+### 4.2 端点列表
+
+| 方法 | 路径 | 适用年份 | 描述 |
+|------|------|---------|------|
+| GET | `/api/time-capsule/{year}` | year < 当前年 | 获取历史时间胶囊 |
+| GET | `/api/future-fossils/{year}` | year >= 当前年 | 获取未来化石 (支持 Misread 模式) |
+
+### 4.3 路径参数
 
 | 参数 | 类型 | 约束 | 说明 |
 |------|------|------|------|
 | `year` | integer | -500 到 2100 | 目标年份（负数表示公元前） |
 
-### 4.3 响应状态码
+### 4.4 响应状态码
 
 | 状态码 | 场景 | 响应体 |
 |--------|------|--------|
-| 200 | 成功 | `TimeCapsuleResponse` |
+| 200 | 成功 | `TimeCapsuleResponse` 或 `FutureFossilsResponse` |
 | 400 | 年份无效 | `ErrorResponse { error: 'invalid_year' }` |
 | 500 | 生成失败 | `ErrorResponse { error: 'generation_failed' }` |
+
+### 4.5 Future Fossils 特性
+
+**Misread 模式 (误读模式):**
+- 触发条件: 未来年份 (year >= 当前年)
+- 特殊字段: `archaeologist_report` - 外星考古学家的误读报告
+- 事件分类扩展: 增加 `ritual` (祭祀) 和 `unknown` (未知) 分类
+- 用途: 以外星视角"误读"人类文明遗迹
 
 ## 5. 环境配置
 
@@ -127,6 +202,8 @@ src/
 - 🚫 不要在未配置 `LLM_API_KEY` 和 `TRIPO_API_KEY` 的情况下启动服务
 - 🚫 不要假设公元 0 年存在（系统会自动映射到公元 1 年）
 - 🚫 不要在首次生成时设置过短的超时时间（需要 ~60s）
+- 🚫 不要在 Misread 模式下忽略 `archaeologist_report` 字段
+- 🚫 不要混淆 `EventCategory` 和 `FossilEventCategory` 类型
 
 ## 9. 测试检查清单
 
