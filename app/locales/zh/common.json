@@ -89,7 +89,8 @@
   "archives": {
     "title": "历史档案",
     "culturalSymbols": "文化符号",
-    "generatedAt": "生成于 {{date}}"
+    "generatedAt": "生成于 {{date}}",
+    "archaeologistReport": "外星考古报告"
   },
   "chronometer": {
     "yearBce": "公元前 {{year}} 年",

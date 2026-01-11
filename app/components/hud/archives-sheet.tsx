@@ -1,23 +1,26 @@
 /**
  * 历史档案抽屉组件
  * 深空终端美学 - 展示历史事件详情
+ * 支持 Time Capsule 和 Future Fossils 两种数据格式
  */
 
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
-import type { HistoryEvent, TimeCapsuleData } from '@/types/time-capsule';
-import { CATEGORY_COLORS, CATEGORY_LABELS } from '@/types/time-capsule';
+import type { CapsuleData, FossilEvent, HistoryEvent, FossilEventCategory, EventCategory } from '@/types/time-capsule';
+import { CATEGORY_COLORS, CATEGORY_LABELS, FOSSIL_CATEGORY_COLORS, FOSSIL_CATEGORY_LABELS, isFutureFossilsData, isMisreadMode } from '@/types/time-capsule';
 
 interface ArchivesSheetProps {
-  data: TimeCapsuleData;
+  data: CapsuleData;
   isOpen: boolean;
   onClose: () => void;
 }
 
-function EventCard({ event }: { event: HistoryEvent }) {
-  const categoryColor = CATEGORY_COLORS[event.category];
-  const categoryLabel = CATEGORY_LABELS[event.category];
+/** 事件卡片 - 支持两种事件类型 */
+function EventCard({ event, isFossil }: { event: HistoryEvent | FossilEvent; isFossil: boolean }) {
+  const category = event.category as FossilEventCategory;
+  const categoryColor = isFossil ? FOSSIL_CATEGORY_COLORS[category] : CATEGORY_COLORS[category as EventCategory];
+  const categoryLabel = isFossil ? FOSSIL_CATEGORY_LABELS[category] : CATEGORY_LABELS[category as EventCategory];
 
   return (
     <div className="hud-panel p-4">
@@ -38,8 +41,32 @@ function EventCard({ event }: { event: HistoryEvent }) {
   );
 }
 
+/** 外星考古报告卡片 - Misread 模式特有 */
+function ArchaeologistReportCard({ report }: { report: string }) {
+  const { t } = useTranslation();
+
+  return (
+    <div className="hud-panel border-amber-500/30 bg-amber-500/5 p-4">
+      {/* 标题 */}
+      <div className="mb-2 flex items-center gap-2">
+        <div className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+        <span className="data-label text-amber-500">
+          {t('archives.archaeologistReport', '外星考古报告')}
+        </span>
+      </div>
+
+      {/* 报告内容 */}
+      <p className="font-mono text-sm text-amber-200/80 leading-relaxed whitespace-pre-wrap">
+        {report}
+      </p>
+    </div>
+  );
+}
+
 export function ArchivesSheet({ data, isOpen, onClose }: ArchivesSheetProps) {
   const { t } = useTranslation();
+  const isFossil = isFutureFossilsData(data);
+  const isMisread = isMisreadMode(data);
 
   if (!isOpen) return null;
 
@@ -71,7 +98,15 @@ export function ArchivesSheet({ data, isOpen, onClose }: ArchivesSheetProps) {
         <div className="border-b border-white/10 px-4 pb-4 sm:px-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="data-label">{t('archives.title')}</p>
+              <div className="flex items-center gap-2">
+                <p className="data-label">{t('archives.title')}</p>
+                {/* Misread 模式标识 */}
+                {isMisread && (
+                  <span className="px-1.5 py-0.5 text-[9px] font-mono bg-amber-500/20 text-amber-400 rounded">
+                    MISREAD
+                  </span>
+                )}
+              </div>
               <h2 className="font-mono text-xl sm:text-2xl text-hud-text">{data.year_display}</h2>
             </div>
             <button onClick={onClose} className="btn-hud min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label={t('common.close')}>
@@ -85,8 +120,14 @@ export function ArchivesSheet({ data, isOpen, onClose }: ArchivesSheetProps) {
         {/* 事件列表 */}
         <div className="scrollbar-thin max-h-[65vh] sm:max-h-[60vh] overflow-y-auto p-4 sm:p-6">
           <div className="space-y-4">
+            {/* 外星考古报告 - Misread 模式特有，放在最前面 */}
+            {isFossil && isMisread && data.archaeologist_report && (
+              <ArchaeologistReportCard report={data.archaeologist_report} />
+            )}
+
+            {/* 事件卡片 */}
             {data.events.map((event, index) => (
-              <EventCard key={index} event={event} />
+              <EventCard key={index} event={event} isFossil={isFossil} />
             ))}
           </div>
 

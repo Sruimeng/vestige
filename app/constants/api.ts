@@ -29,9 +29,35 @@ export const RETRY_DELAY = 1000; // 1秒
 // API 端点
 export const API_ENDPOINTS = {
   TIME_CAPSULE: (year: number) => `/api/time-capsule/${year}`,
+  FUTURE_FOSSILS: (year: number) => `/api/future-fossils/${year}`,
   HEALTH: '/health',
   PROXY_MODEL: '/api/proxy-model',
 } as const;
+
+/**
+ * 获取当前年份
+ */
+export function getCurrentYear(): number {
+  return new Date().getFullYear();
+}
+
+/**
+ * 判断是否应使用 Future Fossils API
+ * 规则：year >= 当前年份 使用 Future Fossils
+ */
+export function shouldUseFutureFossils(year: number): boolean {
+  return year >= getCurrentYear();
+}
+
+/**
+ * 根据年份获取对应的 API 端点
+ */
+export function getApiEndpoint(year: number): string {
+  if (shouldUseFutureFossils(year)) {
+    return API_ENDPOINTS.FUTURE_FOSSILS(year);
+  }
+  return API_ENDPOINTS.TIME_CAPSULE(year);
+}
 
 // 错误代码
 export const ERROR_CODES = {

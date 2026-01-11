@@ -88,7 +88,8 @@
   "archives": {
     "title": "歴史アーカイブ",
     "culturalSymbols": "文化シンボル",
-    "generatedAt": "生成日時：{{date}}"
+    "generatedAt": "生成日時：{{date}}",
+    "archaeologistReport": "異星考古学レポート"
   },
   "chronometer": {
     "yearBce": "紀元前 {{year}} 年",

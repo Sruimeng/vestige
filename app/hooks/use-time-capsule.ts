@@ -7,7 +7,6 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import {
   API_BASE_URL,
-  API_ENDPOINTS,
   API_TIMEOUT,
   ERROR_CODES,
   ERROR_MESSAGES,
@@ -15,12 +14,16 @@ import {
   POLL_INTERVAL,
   processModelUrl,
   USE_MOCK,
+  getApiEndpoint,
+  shouldUseFutureFossils,
 } from '@/constants/api';
 import { useTimeCapsuleStore } from '@/store/time-capsule';
 import type {
   TimeCapsuleData,
   TimeCapsuleErrorResponse,
   TimeCapsuleGeneratingResponse,
+  CapsuleData,
+  FutureFossilsData,
 } from '@/types/time-capsule';
 import { YEAR_MAX, YEAR_MIN } from '@/types/time-capsule';
 
@@ -29,7 +32,7 @@ import { YEAR_MAX, YEAR_MIN } from '@/types/time-capsule';
 // ============================================================================
 
 /**
- * 生成 Mock 数据
+ * 生成 Mock 数据 (Time Capsule)
  */
 function generateMockData(year: number): TimeCapsuleData {
   const isBC = year < 0;
@@ -69,13 +72,63 @@ function generateMockData(year: number): TimeCapsuleData {
 }
 
 /**
+ * 生成 Mock 数据 (Future Fossils - Misread 模式)
+ */
+function generateMockFossilData(year: number): FutureFossilsData {
+  const yearDisplay = `公元 ${year} 年`;
+
+  const mockEvents = [
+    {
+      title: '散热神坛出土',
+      description: '发现大量带有风扇结构的祭祀平台，推测为高级祭司专用。',
+      category: 'ritual' as const,
+    },
+    {
+      title: '发光祈祷板遗迹',
+      description: '一种能发出蓝光的薄板，上面刻有神秘符号，疑似用于与神灵沟通。',
+      category: 'unknown' as const,
+    },
+    {
+      title: '数据祭品容器',
+      description: '小型金属盒，内部结构极其复杂，可能用于存储献给神灵的祭品。',
+      category: 'technology' as const,
+    },
+  ];
+
+  const mockSymbols = ['散热神坛', '发光祈祷板', '数据祭品', '算力图腾'];
+
+  return {
+    year,
+    year_display: yearDisplay,
+    mode: 'misread',
+    events: mockEvents,
+    symbols: mockSymbols,
+    synthesis: `一块化石化的显卡，风扇叶片已石化，表面覆盖着苔藓。`,
+    philosophy: `这个文明崇拜一种名为"算力"的无形神灵，他们相信通过不断的"挖矿"仪式可以获得神灵的庇佑。`,
+    archaeologist_report: `编号 XA-${year}-07：本遗物被确认为高级祭司专用的"散热神坛"。根据周围出土的"发光祈祷板"和"数据祭品"判断，这是一处重要的宗教场所。该文明似乎相信通过复杂的电子仪式可以与"云端"神灵建立连接。`,
+    model_url: '',
+    generated_at: new Date().toISOString(),
+  };
+}
+
+/**
+ * 根据年份生成对应的 Mock 数据
+ */
+function generateMockDataForYear(year: number): CapsuleData {
+  if (shouldUseFutureFossils(year)) {
+    return generateMockFossilData(year);
+  }
+  return generateMockData(year);
+}
+
+/**
  * 模拟 API 调用延迟（开发用）
  */
 async function simulateApiCall(
   year: number,
   onProgress?: (p: number) => void,
   signal?: AbortSignal
-): Promise<TimeCapsuleData> {
+): Promise<CapsuleData> {
   const totalSteps = 20;
   const stepDelay = 150; // 3秒总时长
 
@@ -87,7 +140,7 @@ async function simulateApiCall(
     onProgress?.(Math.round((i / totalSteps) * 100));
   }
 
-  return generateMockData(year);
+  return generateMockDataForYear(year);
 }
 
 // ============================================================================
@@ -158,14 +211,14 @@ class NetworkError extends Error {
   }
 }
 
-/** 成功响应：{ data: TimeCapsuleData } */
+/** 成功响应：{ data: CapsuleData } */
 interface ApiSuccessResponse {
-  data: TimeCapsuleData;
+  data: CapsuleData;
 }
 
 /** fetchOnce 返回结果类型 */
 type FetchResult =
-  | { type: 'success'; data: TimeCapsuleData }
+  | { type: 'success'; data: CapsuleData }
   | { type: 'generating'; waitSeconds: number }
   | { type: 'retry' };
 
@@ -320,7 +373,7 @@ export function useTimeCapsule() {
         store.setError(null);
         store.setProgress(0);
 
-        let data: TimeCapsuleData;
+        let data: CapsuleData;
 
         if (USE_MOCK) {
           // ====== Mock 模式 ======
@@ -328,7 +381,8 @@ export function useTimeCapsule() {
           data = await simulateApiCall(targetYear, store.setProgress, abortController.signal);
         } else {
           // ====== 真实 API 调用（轮询模式）======
-          const url = `${API_BASE_URL}${API_ENDPOINTS.TIME_CAPSULE(targetYear)}`;
+          // 根据年份自动选择 API 端点
+          const url = `${API_BASE_URL}${getApiEndpoint(targetYear)}`;
           const pollStartTime = Date.now();
 
           // 第一次尝试
@@ -400,7 +454,7 @@ export function useTimeCapsule() {
         }
 
         // 使用 mock 数据（model_url 为空会显示占位球体）
-        const mockData = generateMockData(targetYear);
+        const mockData = generateMockDataForYear(targetYear);
         store.setCapsuleData(mockData);
         store.setSystemState('MATERIALIZED');
         store.setProgress(100);

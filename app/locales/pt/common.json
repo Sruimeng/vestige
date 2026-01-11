@@ -88,7 +88,8 @@
   "archives": {
     "title": "ARQUIVOS HISTÓRICOS",
     "culturalSymbols": "SÍMBOLOS CULTURAIS",
-    "generatedAt": "Gerado em {{date}}"
+    "generatedAt": "Gerado em {{date}}",
+    "archaeologistReport": "RELATÓRIO ARQUEOLÓGICO ALIENÍGENA"
   },
   "chronometer": {
     "yearBce": "{{year}} a.C.",

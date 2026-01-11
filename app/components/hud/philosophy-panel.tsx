@@ -1,16 +1,17 @@
 /**
  * 哲学面板组件
  * 深空终端美学 - 展示年份的哲学解读
+ * 支持 Time Capsule 和 Future Fossils 两种数据格式
  */
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { TimeCapsuleData } from '@/types/time-capsule';
+import type { CapsuleData } from '@/types/time-capsule';
 
 interface PhilosophyPanelProps {
-  data: TimeCapsuleData;
+  data: CapsuleData;
   onTap?: () => void;
   className?: string;
 }

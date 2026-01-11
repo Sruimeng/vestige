@@ -88,7 +88,8 @@
   "archives": {
     "title": "ИСТОРИЧЕСКИЕ АРХИВЫ",
     "culturalSymbols": "КУЛЬТУРНЫЕ СИМВОЛЫ",
-    "generatedAt": "Создано {{date}}"
+    "generatedAt": "Создано {{date}}",
+    "archaeologistReport": "ОТЧЁТ ИНОПЛАНЕТНОГО АРХЕОЛОГА"
   },
   "chronometer": {
     "yearBce": "{{year}} до н.э.",

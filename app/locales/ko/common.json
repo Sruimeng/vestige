@@ -88,7 +88,8 @@
   "archives": {
     "title": "역사 아카이브",
     "culturalSymbols": "문화 심볼",
-    "generatedAt": "생성 시간: {{date}}"
+    "generatedAt": "생성 시간: {{date}}",
+    "archaeologistReport": "외계 고고학 보고서"
   },
   "chronometer": {
     "yearBce": "기원전 {{year}} 년",

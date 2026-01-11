@@ -1,10 +1,13 @@
 /**
  * Time Capsule API 类型定义
- * 根据 time-capsule-guide.md 规范
+ * 根据 time-capsule-guide.md 和 future-fossils-guide.md 规范
  */
 
-/** 历史事件分类 */
+/** 历史事件分类 (Time Capsule) */
 export type EventCategory = 'politics' | 'technology' | 'culture' | 'economy' | 'science';
+
+/** Future Fossils 事件分类 (包含 Misread 模式特有分类) */
+export type FossilEventCategory = EventCategory | 'ritual' | 'unknown';
 
 /** 历史事件 */
 export interface HistoryEvent {
@@ -13,7 +16,17 @@ export interface HistoryEvent {
   category: EventCategory;
 }
 
-/** 时间胶囊数据 */
+/** Future Fossils 事件 */
+export interface FossilEvent {
+  title: string;
+  description: string;
+  category: FossilEventCategory;
+}
+
+/** Future Fossils 模式 */
+export type FossilMode = 'history' | 'misread';
+
+/** 时间胶囊数据 (原有) */
 export interface TimeCapsuleData {
   year: number;
   year_display: string;
@@ -23,6 +36,34 @@ export interface TimeCapsuleData {
   philosophy: string;
   model_url: string;
   generated_at: string;
+}
+
+/** Future Fossils 数据 (扩展) */
+export interface FutureFossilsData {
+  year: number;
+  year_display: string;
+  mode: FossilMode;
+  events: FossilEvent[];
+  symbols: string[];
+  synthesis: string;
+  philosophy: string;
+  model_url: string;
+  generated_at: string;
+  /** Misread 模式特有：外星考古报告 */
+  archaeologist_report?: string;
+}
+
+/** 统一数据类型 (兼容两种 API) */
+export type CapsuleData = TimeCapsuleData | FutureFossilsData;
+
+/** 判断是否为 Future Fossils 数据 */
+export function isFutureFossilsData(data: CapsuleData): data is FutureFossilsData {
+  return 'mode' in data;
+}
+
+/** 判断是否为 Misread 模式 */
+export function isMisreadMode(data: CapsuleData): boolean {
+  return isFutureFossilsData(data) && data.mode === 'misread';
 }
 
 /** 时间胶囊响应 */
@@ -72,6 +113,13 @@ export const CATEGORY_LABELS: Record<EventCategory, string> = {
   science: '科学',
 };
 
+/** Future Fossils 分类显示映射 (包含 Misread 特有分类) */
+export const FOSSIL_CATEGORY_LABELS: Record<FossilEventCategory, string> = {
+  ...CATEGORY_LABELS,
+  ritual: '祭祀',
+  unknown: '未知',
+};
+
 /** 分类颜色映射 */
 export const CATEGORY_COLORS: Record<EventCategory, string> = {
   politics: '#EF4444', // red
@@ -79,4 +127,11 @@ export const CATEGORY_COLORS: Record<EventCategory, string> = {
   culture: '#A855F7', // purple
   economy: '#22C55E', // green
   science: '#F59E0B', // amber
+};
+
+/** Future Fossils 分类颜色映射 */
+export const FOSSIL_CATEGORY_COLORS: Record<FossilEventCategory, string> = {
+  ...CATEGORY_COLORS,
+  ritual: '#EC4899', // pink
+  unknown: '#6B7280', // gray
 };

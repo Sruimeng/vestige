@@ -89,7 +89,8 @@
   "archives": {
     "title": "HISTORICAL ARCHIVES",
     "culturalSymbols": "CULTURAL SYMBOLS",
-    "generatedAt": "Generated at {{date}}"
+    "generatedAt": "Generated at {{date}}",
+    "archaeologistReport": "ARCHAEOLOGIST REPORT"
   },
   "chronometer": {
     "yearBce": "{{year}} BCE",

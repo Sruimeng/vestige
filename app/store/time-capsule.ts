@@ -1,24 +1,24 @@
 /**
  * Time Capsule Zustand Store
- * 管理时间胶囊状态
+ * 管理时间胶囊状态（兼容 Future Fossils）
  */
 
 import { create } from 'zustand';
 
-import type { SystemState, TimeCapsuleData } from '@/types/time-capsule';
+import type { SystemState, CapsuleData } from '@/types/time-capsule';
 
 interface TimeCapsuleStore {
   // 状态
   currentYear: number;
   systemState: SystemState;
-  capsuleData: TimeCapsuleData | null;
+  capsuleData: CapsuleData | null;
   error: string | null;
   progress: number; // 0-100，用于 CONSTRUCTING 状态
 
   // 动作
   setYear: (year: number) => void;
   setSystemState: (state: SystemState) => void;
-  setCapsuleData: (data: TimeCapsuleData | null) => void;
+  setCapsuleData: (data: CapsuleData | null) => void;
   setError: (error: string | null) => void;
   setProgress: (progress: number) => void;
   reset: () => void;
