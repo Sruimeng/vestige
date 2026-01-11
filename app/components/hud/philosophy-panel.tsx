@@ -66,10 +66,10 @@ export function PhilosophyPanel({ data, onTap, className = '' }: PhilosophyPanel
             <h2 className="mb-2 font-mono text-xl text-hud-text tracking-widest">{data.year_display}</h2>
 
             {/* 合成物体描述 */}
-            <p className="mb-1 font-sans text-xs text-hud-text/70 line-clamp-2">{data.synthesis}</p>
+            <p className="mb-1 font-sans text-xs text-hud-text/70 line-clamp-3">{data.synthesis}</p>
 
             {/* 哲学评判 */}
-            <p className="title-philosophy text-sm leading-relaxed line-clamp-3">{data.philosophy}</p>
+            <p className="title-philosophy text-sm leading-relaxed line-clamp-5">{data.philosophy}</p>
 
             {/* 文化符号 */}
             <div className="mt-3 flex flex-wrap gap-1.5">
@@ -120,10 +120,10 @@ export function PhilosophyPanel({ data, onTap, className = '' }: PhilosophyPanel
       <h2 className="mb-2 font-mono text-2xl text-hud-text tracking-widest">{data.year_display}</h2>
 
       {/* 合成物体描述 */}
-      <p className="mb-1 font-sans text-sm text-hud-text/70 line-clamp-2">{data.synthesis}</p>
+      <p className="mb-1 font-sans text-sm text-hud-text/70 line-clamp-3">{data.synthesis}</p>
 
       {/* 哲学评判 */}
-      <p className="title-philosophy text-base leading-relaxed line-clamp-3">{data.philosophy}</p>
+      <p className="title-philosophy text-base leading-relaxed line-clamp-5">{data.philosophy}</p>
 
       {/* 文化符号 */}
       <div className="mt-3 flex flex-wrap gap-1.5">
