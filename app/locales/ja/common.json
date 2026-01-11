@@ -96,5 +96,17 @@
   },
   "year": {
     "redirecting": "リダイレクト中..."
+  },
+  "filter": {
+    "title": "スタイルフィルター",
+    "default": "デフォルト",
+    "blueprint": "ブループリント",
+    "halftone": "ハーフトーン",
+    "ascii": "ASCII",
+    "pixel": "ピクセル",
+    "sketch": "スケッチ",
+    "glitch": "グリッチ",
+    "crystal": "クリスタル",
+    "claymation": "クレイ"
   }
 }

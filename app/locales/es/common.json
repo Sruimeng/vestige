@@ -96,5 +96,17 @@
   },
   "year": {
     "redirecting": "REDIRIGIENDO..."
+  },
+  "filter": {
+    "title": "FILTRO DE ESTILO",
+    "default": "PREDETERMINADO",
+    "blueprint": "PLANO",
+    "halftone": "SEMITONO",
+    "ascii": "ASCII",
+    "pixel": "PÍXEL",
+    "sketch": "BOCETO",
+    "glitch": "GLITCH",
+    "crystal": "CRISTAL",
+    "claymation": "ARCILLA"
   }
 }

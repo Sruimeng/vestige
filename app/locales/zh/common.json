@@ -96,5 +96,17 @@
   },
   "year": {
     "redirecting": "正在跳转..."
+  },
+  "filter": {
+    "title": "风格滤镜",
+    "default": "默认",
+    "blueprint": "蓝图",
+    "halftone": "半调",
+    "ascii": "ASCII",
+    "pixel": "像素",
+    "sketch": "素描",
+    "glitch": "故障",
+    "crystal": "水晶",
+    "claymation": "黏土"
   }
 }

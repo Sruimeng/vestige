@@ -96,5 +96,17 @@
   },
   "year": {
     "redirecting": "리디렉션 중..."
+  },
+  "filter": {
+    "title": "스타일 필터",
+    "default": "기본",
+    "blueprint": "블루프린트",
+    "halftone": "하프톤",
+    "ascii": "ASCII",
+    "pixel": "픽셀",
+    "sketch": "스케치",
+    "glitch": "글리치",
+    "crystal": "크리스탈",
+    "claymation": "클레이"
   }
 }

@@ -96,5 +96,17 @@
   },
   "year": {
     "redirecting": "ПЕРЕНАПРАВЛЕНИЕ..."
+  },
+  "filter": {
+    "title": "ФИЛЬТР СТИЛЯ",
+    "default": "ПО УМОЛЧАНИЮ",
+    "blueprint": "ЧЕРТЁЖ",
+    "halftone": "ПОЛУТОН",
+    "ascii": "ASCII",
+    "pixel": "ПИКСЕЛЬ",
+    "sketch": "ЭСКИЗ",
+    "glitch": "ГЛИТЧ",
+    "crystal": "КРИСТАЛЛ",
+    "claymation": "ПЛАСТИЛИН"
   }
 }

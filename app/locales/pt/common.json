@@ -96,5 +96,17 @@
   },
   "year": {
     "redirecting": "REDIRECIONANDO..."
+  },
+  "filter": {
+    "title": "FILTRO DE ESTILO",
+    "default": "PADRÃO",
+    "blueprint": "PLANTA",
+    "halftone": "MEIO-TOM",
+    "ascii": "ASCII",
+    "pixel": "PIXEL",
+    "sketch": "ESBOÇO",
+    "glitch": "GLITCH",
+    "crystal": "CRISTAL",
+    "claymation": "ARGILA"
   }
 }

@@ -6,23 +6,31 @@
 import { Environment, OrbitControls, PerspectiveCamera, Stars } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
+import {
+  PostProcessingComposer,
+  useStyleFilter,
+  BlueprintGridBackground,
+  MatrixRainBackground,
+  NewspaperBackground,
+  SketchbookBackground,
+} from '@/components/post-processing';
 
 interface SceneCanvasProps {
   children?: React.ReactNode;
   className?: string;
 }
 
-// 深空背景粒子
+// 深空背景粒子 - 降低亮度避免触发 Bloom
 function DeepSpaceBackground() {
   return (
     <Stars
       radius={100}
       depth={50}
       count={2000}
-      factor={4}
+      factor={7}
       saturation={0}
       fade
-      speed={0.5}
+      speed={0.1}
     />
   );
 }
@@ -80,6 +88,29 @@ function LightingRig() {
   );
 }
 
+// 条件背景渲染
+function ConditionalBackground() {
+  const { filter } = useStyleFilter();
+
+  if (filter === 'blueprint') {
+    return <BlueprintGridBackground />;
+  }
+
+  if (filter === 'ascii') {
+    return <MatrixRainBackground />;
+  }
+
+  if (filter === 'halftone') {
+    return <NewspaperBackground />;
+  }
+
+  if (filter === 'sketch') {
+    return <SketchbookBackground />;
+  }
+
+  return <DeepSpaceBackground />;
+}
+
 export function SceneCanvas({ children, className = '' }: SceneCanvasProps) {
   return (
     <div className={`absolute inset-0 ${className}`}>
@@ -104,14 +135,14 @@ export function SceneCanvas({ children, className = '' }: SceneCanvasProps) {
             far={1000}
           />
 
-          {/* 深空背景 */}
-          <DeepSpaceBackground />
+          {/* 条件背景 - 根据滤镜切换 */}
+          <ConditionalBackground />
 
           {/* 光照系统 */}
           <LightingRig />
 
-          {/* 环境贴图 - Studio Light 风格 */}
-          <Environment preset="studio" environmentIntensity={0.3} />
+          {/* 环境贴图 - Night 风格，高对比度用于水晶反射 */}
+          <Environment preset="studio" environmentIntensity={0.7} background={false} />
 
           {/* 雾效 - 增加深度感 */}
           <fog attach="fog" args={['#050505', 8, 30]} />
@@ -128,6 +159,9 @@ export function SceneCanvas({ children, className = '' }: SceneCanvasProps) {
             enableDamping
             dampingFactor={0.05}
           />
+
+          {/* 后处理效果 */}
+          <PostProcessingComposer />
 
           {/* 子内容 */}
           {children}

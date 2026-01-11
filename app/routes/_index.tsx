@@ -16,6 +16,7 @@ import {
   LogStream,
   PhilosophyPanel,
 } from '@/components/hud';
+import { StyleFilterProvider } from '@/components/post-processing';
 import { ArtifactModel, HologramWireframe, PlaceholderSphere, SceneCanvas } from '@/components/scene';
 import { useTimeCapsule } from '@/hooks/use-time-capsule';
 
@@ -72,34 +73,35 @@ export default function Index() {
       {/* 主界面 */}
       <AnimatePresence>
         {isBooted && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="relative h-screen w-screen overflow-hidden bg-canvas vignette scanlines"
-          >
-            {/* 3D 场景 */}
-            <SceneCanvas>
-              {systemState === 'CONSTRUCTING' && <HologramWireframe isAnimating />}
-
-              {systemState === 'MATERIALIZED' && (
-                <>
-                  {hasRealModel ? (
-                    <ArtifactModel url={capsuleData!.model_url} />
-                  ) : (
-                    <PlaceholderSphere />
-                  )}
-                </>
-              )}
-            </SceneCanvas>
-
-            {/* HUD 信息层 */}
+          <StyleFilterProvider>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
+              transition={{ duration: 0.5 }}
+              className="relative h-screen w-screen overflow-hidden bg-canvas vignette scanlines"
             >
-              <HUDOverlay year={year} status={getHUDStatus()} isLoading={isLoading} />
+              {/* 3D 场景 */}
+              <SceneCanvas>
+                {systemState === 'CONSTRUCTING' && <HologramWireframe isAnimating />}
+
+                {systemState === 'MATERIALIZED' && (
+                  <>
+                    {hasRealModel ? (
+                      <ArtifactModel url={capsuleData!.model_url} />
+                    ) : (
+                      <PlaceholderSphere />
+                    )}
+                  </>
+                )}
+              </SceneCanvas>
+
+              {/* HUD 信息层 */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              >
+                <HUDOverlay year={year} status={getHUDStatus()} isLoading={isLoading} />
             </motion.div>
 
             {/* 时间轴滚动器 - 右侧（桌面端） */}
@@ -245,6 +247,7 @@ export default function Index() {
               )}
             </AnimatePresence>
           </motion.div>
+        </StyleFilterProvider>
         )}
       </AnimatePresence>
     </>

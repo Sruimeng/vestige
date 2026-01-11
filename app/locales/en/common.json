@@ -96,5 +96,17 @@
   },
   "year": {
     "redirecting": "REDIRECTING..."
+  },
+  "filter": {
+    "title": "STYLE FILTER",
+    "default": "DEFAULT",
+    "blueprint": "BLUEPRINT",
+    "halftone": "HALFTONE",
+    "ascii": "ASCII",
+    "pixel": "PIXEL",
+    "sketch": "SKETCH",
+    "glitch": "GLITCH",
+    "crystal": "CRYSTAL",
+    "claymation": "CLAYMATION"
   }
 }
