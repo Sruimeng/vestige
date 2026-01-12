@@ -120,7 +120,6 @@ export const videoUrlHandler = (url: string) => {
 
   const urlObj = new URL(matches[0]);
 
-  // Check for Bilibili video - return bvid
   const bvid = extractBVId(urlObj.pathname);
   if (bvid) {
     return {
@@ -129,7 +128,6 @@ export const videoUrlHandler = (url: string) => {
     };
   }
 
-  // Check for YouTube video
   const youtubeId = extractVideoId(urlObj.href);
   if (youtubeId) {
     return {

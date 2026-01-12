@@ -2,7 +2,7 @@ import type { DebouncedFunc } from 'lodash-es';
 import { debounce, throttle } from 'lodash-es';
 import { useMemo } from 'react';
 
-export const useDebounce = <T extends (...p: any) => any>(
+export const useDebounce = <T extends (...args: unknown[]) => unknown>(
   fn: T,
   deps: React.DependencyList = [],
 ): DebouncedFunc<T> => {
@@ -10,7 +10,7 @@ export const useDebounce = <T extends (...p: any) => any>(
   return debouncedFn;
 };
 
-export const useThrottle = <T extends (...p: any) => any>(
+export const useThrottle = <T extends (...args: unknown[]) => unknown>(
   fn: T,
   deps: React.DependencyList = [],
 ): DebouncedFunc<T> => {

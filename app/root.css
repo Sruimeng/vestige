@@ -1,9 +1,435 @@
+/* stylelint-disable no-invalid-position-at-import-rule */
+/* stylelint-disable color-function-notation */
+/* stylelint-disable alpha-value-notation */
+/* stylelint-disable color-function-alias-notation */
+
+/* 字体导入 - 必须在所有规则之前 */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+/* CSS Reset - 确保无默认边距 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 /* 移动端安全距离变量 */
 :root {
   --safe-area-inset-top: env(safe-area-inset-top);
   --safe-area-inset-right: env(safe-area-inset-right);
   --safe-area-inset-bottom: env(safe-area-inset-bottom);
   --safe-area-inset-left: env(safe-area-inset-left);
+
+  /* Ephemera 色彩变量 */
+  --color-canvas: #050505;
+  --color-accent: #3b82f6;
+  --color-accent-dim: #1e40af;
+  --color-text: #e5e5e5;
+  --color-text-dim: #525252;
+}
+
+/* ================================================
+   Ephemera 深空终端美学 - 全局样式
+   ================================================ */
+
+/* 全局平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 全局选择颜色 */
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: #e5e5e5;
+}
+
+/* ================================================
+   HUD 动画关键帧
+   ================================================ */
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes pulse-glow-strong {
+  0%,
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    filter: brightness(1.2);
+  }
+}
+
+@keyframes data-stream {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes scanline-move {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes loading-bar {
+  0% {
+    width: 0%;
+    opacity: 0.5;
+  }
+
+  50% {
+    width: 70%;
+    opacity: 1;
+  }
+
+  100% {
+    width: 100%;
+    opacity: 0.5;
+  }
+}
+
+@keyframes crosshair-rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  75% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.2);
+  }
+}
+
+@keyframes text-glow {
+  0%,
+  100% {
+    text-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+  }
+
+  50% {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.4);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ================================================
+   HUD 动画工具类
+   ================================================ */
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-pulse-glow-strong {
+  animation: pulse-glow-strong 1.5s ease-in-out infinite;
+}
+
+.animate-data-stream {
+  animation: data-stream 20s linear infinite;
+}
+
+.animate-loading-bar {
+  animation: loading-bar 1.5s ease-in-out infinite;
+}
+
+.animate-crosshair-rotate {
+  animation: crosshair-rotate 4s linear infinite;
+}
+
+.animate-flicker {
+  animation: flicker 0.15s steps(2) infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.animate-text-glow {
+  animation: text-glow 2s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.4s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.3s ease-out forwards;
+}
+
+/* ================================================
+   后处理效果
+   ================================================ */
+
+/* 暗角效果 - 增强版 */
+.vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  background: radial-gradient(
+    ellipse 80% 80% at center,
+    transparent 30%,
+    rgba(0, 0, 0, 0.4) 70%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+/* 扫描线效果 - 增强版 */
+.scanlines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 21;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.02) 2px,
+    rgba(0, 0, 0, 0.02) 4px
+  );
+  animation: flicker 8s linear infinite;
+}
+
+/* 移动扫描线效果（可选） */
+.scanlines-animated::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 22;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(59, 130, 246, 0.03) 50%,
+    transparent 100%
+  );
+  height: 30%;
+  animation: scanline-move 8s linear infinite;
+}
+
+/* CRT 曲面效果（可选） */
+.crt-curve {
+  position: relative;
+}
+
+.crt-curve::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 23;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 70%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  border-radius: 50% / 3%;
+}
+
+/* 噪点效果（可选） */
+.noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 24;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ================================================
+   字体排印
+   ================================================ */
+
+/* HUD 等宽数字 */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 等宽数字和老式数字 */
+.oldstyle-nums {
+  font-variant-numeric: oldstyle-nums;
+}
+
+/* 紧凑字间距 */
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+
+/* 宽松字间距 - HUD 标签 */
+.tracking-hud {
+  letter-spacing: 0.2em;
+}
+
+/* 超宽字间距 - 标题 */
+.tracking-ultra {
+  letter-spacing: 0.3em;
+}
+
+/* 哲学文本样式 */
+.text-philosophy {
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  letter-spacing: -0.01em;
+  line-height: 1.6;
+}
+
+/* 数据文本样式 */
+.text-data {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+}
+
+/* 系统标签样式 */
+.text-system {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+/* ================================================
+   交互效果
+   ================================================ */
+
+/* HUD 按钮悬停效果 */
+.hud-interactive {
+  transition: all 0.2s ease-out;
+}
+
+.hud-interactive:hover {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.hud-interactive:active {
+  transform: scale(0.98);
+}
+
+/* 玻璃面板悬停效果 */
+.glass-interactive {
+  transition: all 0.3s ease-out;
+}
+
+.glass-interactive:hover {
+  background: rgba(30, 30, 35, 0.7);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* 焦点环 - HUD 风格 */
+.focus-hud:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
 /* 2K分辨率及以上 */
@@ -24,10 +450,5 @@
 @media (width <= 768px) {
   html {
     font-size: max(calc(100vw / 768 * 16), 16px);
-  }
-
-  /* 确保页面内容不被安全区域遮挡 */
-  body {
-    padding: var(--safe-area-inset-top) 0 var(--safe-area-inset-bottom) 0;
   }
 }

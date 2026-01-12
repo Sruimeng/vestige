@@ -130,10 +130,57 @@ related_ids: [doc-standard]
 
 ---
 
+## 🔴 当前技术债务 (2026-01-12 审计)
+
+> **审计状态**: ✅ 已修复
+> **修复日期**: 2026-01-12
+
+### CRITICAL: 内存分配违规 ✅
+
+| ID | 文件 | 行号 | 问题 | 状态 |
+|----|------|------|------|------|
+| DEBT-010 | `blueprint-edge-effect.tsx` | 64 | `new Color('#00FFFF')` 在默认参数中 | ✅ 已修复 |
+| DEBT-011 | `blueprint-edge-effect.tsx` | 67 | `new Vector2(1920, 1080)` 在默认参数中 | ✅ 已修复 |
+| DEBT-012 | `cyber-glitch-effect.tsx` | 101 | `new Vector2(1920, 1080)` 在默认参数中 | ✅ 已修复 |
+
+**修复方案**: 预分配为模块级常量 `DEFAULT_EDGE_COLOR`, `DEFAULT_RESOLUTION`
+
+### HIGH: 命名违规 (Hemingway) ✅
+
+| ID | 文件 | 行号 | 问题 | 状态 |
+|----|------|------|------|------|
+| DEBT-013 | `blueprint-edge-effect.tsx` | 62 | `BlueprintEdgeEffectImpl` -> `BlueprintEdge` | ✅ 已修复 |
+| DEBT-014 | `cyber-glitch-effect.tsx` | 98 | `CyberGlitchEffectImpl` -> `CyberGlitch` | ✅ 已修复 |
+| DEBT-015 | `scanline-effect.tsx` | 32 | `ScanlineEffectImpl` -> `Scanline` | ✅ 已修复 |
+
+**修复方案**: 移除 `Impl` 后缀
+
+### HIGH: 类型安全违规 ✅
+
+| ID | 文件 | 行号 | 问题 | 状态 |
+|----|------|------|------|------|
+| DEBT-016 | `debounce.ts` | 5 | `any` -> `unknown` | ✅ 已修复 |
+| DEBT-017 | `debounce.ts` | 13 | `any` -> `unknown` | ✅ 已修复 |
+
+**修复方案**: 替换为 `(...args: unknown[]) => unknown`
+
+### MEDIUM: "What" 注释违规 ✅
+
+| ID | 文件 | 行号 | 问题 | 状态 |
+|----|------|------|------|------|
+| DEBT-018 | `utils.ts` | 123 | `// Check for Bilibili video - return bvid` | ✅ 已删除 |
+| DEBT-019 | `utils.ts` | 132 | `// Check for YouTube video` | ✅ 已删除 |
+| DEBT-020 | `crystal-material.tsx` | 272 | `// Update uniforms when props change` | ✅ 已删除 |
+
+**修复方案**: 删除这些注释
+
+---
+
 ## 📝 清理日志
 
 | 日期 | 操作 |
 |------|------|
+| 2026-01-12 | 审计发现 11 项新技术债务 (3 CRITICAL, 5 HIGH, 3 MEDIUM) |
 | 2026-01-07 | 完成全部技术债务清理 |
 | 2026-01-07 | 删除 `app/utils/resource.ts` |
 | 2026-01-07 | 清理 6 个废弃业务代码文件 |

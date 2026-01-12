@@ -22,6 +22,93 @@
     "delete": "删除",
     "edit": "编辑",
     "loading": "加载中...",
-    "welcome": "欢迎使用！"
+    "welcome": "欢迎使用！",
+    "close": "关闭",
+    "backHome": "返回首页"
+  },
+  "index": {
+    "selectYear": "选择一个年份",
+    "yearRange": "从公元前 500 年到公元 2100 年",
+    "previousYear": "上一年",
+    "nextYear": "下一年",
+    "errorTitle": "错误：合成失败",
+    "errorMessage": "请稍后重试或选择其他年份",
+    "errorRetry": "重试",
+    "ce": "公元",
+    "bce": "公元前"
+  },
+  "boot": {
+    "projectId": "EPHEMERA.CAPSULE.V1",
+    "initTemporal": "正在初始化时间核心...",
+    "loadingDatabase": "正在加载历史数据库...",
+    "calibrating": "正在校准坐标...",
+    "systemReady": "系统就绪",
+    "skip": "跳过 →"
+  },
+  "hud": {
+    "projectId": "EPHEMERA.CAPSULE.V1",
+    "coordinates": "坐标：年份",
+    "yearBce": "公元前 {{year}}",
+    "yearCe": "公元 {{year}}",
+    "nominal": "系统正常",
+    "init": "系统初始化",
+    "loading": "数据同步",
+    "ready": "数据就绪",
+    "error": "系统错误",
+    "timezone": "CN",
+    "filter": "滤镜"
+  },
+  "log": {
+    "initSystem": "初始化系统...",
+    "scanningCoords": "扫描时间坐标...",
+    "yearLock": "年份锁定：{{year}}",
+    "searchCache": "搜索缓存... 未命中",
+    "initReconstruction": "初始化重建协议...",
+    "connecting": "连接时间流...",
+    "analyzing": "分析历史数据...",
+    "extractingSymbols": "提取文化符号...",
+    "processingEvents": "处理事件：{{count}}/5",
+    "generatingSynthesis": "生成合成描述...",
+    "callingGeometry": "调用几何引擎...",
+    "meshGeneration": "网格生成中...",
+    "textureSynthesis": "纹理合成中...",
+    "materialCalc": "计算材质属性...",
+    "finalizingModel": "完成 3D 模型...",
+    "uploadingArtifact": "上传文物...",
+    "verificationComplete": "验证完成",
+    "materializationReady": "实体化就绪",
+    "progress": "重建进度",
+    "percent": "{{progress}}%"
+  },
+  "panel": {
+    "tapToExpand": "点击展开 ↑",
+    "collapse": "↓",
+    "viewArchives": "查看档案",
+    "tapForDetails": "点击查看详情"
+  },
+  "archives": {
+    "title": "历史档案",
+    "culturalSymbols": "文化符号",
+    "generatedAt": "生成于 {{date}}",
+    "archaeologistReport": "外星考古报告"
+  },
+  "chronometer": {
+    "yearBce": "公元前 {{year}} 年",
+    "yearCe": "公元 {{year}} 年"
+  },
+  "year": {
+    "redirecting": "正在跳转..."
+  },
+  "filter": {
+    "title": "风格滤镜",
+    "default": "默认",
+    "blueprint": "蓝图",
+    "halftone": "半调",
+    "ascii": "ASCII",
+    "pixel": "像素",
+    "sketch": "素描",
+    "glitch": "故障",
+    "crystal": "水晶",
+    "claymation": "黏土"
   }
 }

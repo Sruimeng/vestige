@@ -22,6 +22,92 @@
     "delete": "삭제",
     "edit": "편집",
     "loading": "로딩 중...",
-    "welcome": "환영합니다!"
+    "welcome": "환영합니다!",
+    "close": "닫기",
+    "backHome": "홈으로 돌아가기"
+  },
+  "index": {
+    "selectYear": "연도 선택",
+    "yearRange": "기원전 500년부터 서기 2100년까지",
+    "previousYear": "이전 연도",
+    "nextYear": "다음 연도",
+    "errorTitle": "ERR: 합성 실패",
+    "errorMessage": "나중에 다시 시도하거나 다른 연도를 선택하세요",
+    "errorRetry": "재시도",
+    "ce": "서기",
+    "bce": "기원전"
+  },
+  "boot": {
+    "projectId": "EPHEMERA.CAPSULE.V1",
+    "initTemporal": "시간 코어 초기화 중...",
+    "loadingDatabase": "역사 데이터베이스 로딩 중...",
+    "calibrating": "좌표 보정 중...",
+    "systemReady": "시스템 준비 완료",
+    "skip": "건너뛰기 →"
+  },
+  "hud": {
+    "projectId": "EPHEMERA.CAPSULE.V1",
+    "coordinates": "좌표: 연도",
+    "yearBce": "기원전 {{year}}",
+    "yearCe": "서기 {{year}}",
+    "nominal": "시스템 정상",
+    "init": "시스템 초기화",
+    "loading": "데이터 동기화",
+    "ready": "데이터 준비됨",
+    "error": "시스템 오류",
+    "timezone": "KR"
+  },
+  "log": {
+    "initSystem": "시스템 초기화...",
+    "scanningCoords": "시간 좌표 스캔 중...",
+    "yearLock": "연도 잠금 획득: {{year}}",
+    "searchCache": "캐시 검색 중... 미스",
+    "initReconstruction": "재구성 프로토콜 초기화...",
+    "connecting": "시간 스트림 연결 중...",
+    "analyzing": "역사 데이터 분석 중...",
+    "extractingSymbols": "문화 심볼 추출 중...",
+    "processingEvents": "이벤트 처리 중: {{count}}/5",
+    "generatingSynthesis": "합성 생성 중...",
+    "callingGeometry": "지오메트리 엔진 호출 중...",
+    "meshGeneration": "메시 생성 중...",
+    "textureSynthesis": "텍스처 합성 중...",
+    "materialCalc": "머티리얼 계산 중...",
+    "finalizingModel": "3D 모델 완성 중...",
+    "uploadingArtifact": "아티팩트 업로드 중...",
+    "verificationComplete": "검증 완료",
+    "materializationReady": "구현 준비 완료",
+    "progress": "재구성",
+    "percent": "{{progress}}%"
+  },
+  "panel": {
+    "tapToExpand": "탭하여 펼치기 ↑",
+    "collapse": "↓",
+    "viewArchives": "아카이브 보기",
+    "tapForDetails": "탭하여 상세 보기"
+  },
+  "archives": {
+    "title": "역사 아카이브",
+    "culturalSymbols": "문화 심볼",
+    "generatedAt": "생성 시간: {{date}}",
+    "archaeologistReport": "외계 고고학 보고서"
+  },
+  "chronometer": {
+    "yearBce": "기원전 {{year}} 년",
+    "yearCe": "서기 {{year}} 년"
+  },
+  "year": {
+    "redirecting": "리디렉션 중..."
+  },
+  "filter": {
+    "title": "스타일 필터",
+    "default": "기본",
+    "blueprint": "블루프린트",
+    "halftone": "하프톤",
+    "ascii": "ASCII",
+    "pixel": "픽셀",
+    "sketch": "스케치",
+    "glitch": "글리치",
+    "crystal": "크리스탈",
+    "claymation": "클레이"
   }
 }

@@ -22,6 +22,92 @@
     "delete": "Удалить",
     "edit": "Редактировать",
     "loading": "Загрузка...",
-    "welcome": "Добро пожаловать!"
+    "welcome": "Добро пожаловать!",
+    "close": "Закрыть",
+    "backHome": "Вернуться на главную"
+  },
+  "index": {
+    "selectYear": "Выберите год",
+    "yearRange": "С 500 г. до н.э. по 2100 г. н.э.",
+    "previousYear": "Предыдущий год",
+    "nextYear": "Следующий год",
+    "errorTitle": "ОШИБКА: СБОЙ СИНТЕЗА",
+    "errorMessage": "Пожалуйста, повторите попытку или выберите другой год",
+    "errorRetry": "ПОВТОРИТЬ",
+    "ce": "н.э.",
+    "bce": "до н.э."
+  },
+  "boot": {
+    "projectId": "EPHEMERA.CAPSULE.V1",
+    "initTemporal": "ИНИЦИАЛИЗАЦИЯ_ВРЕМЕННОГО_ЯДРА...",
+    "loadingDatabase": "ЗАГРУЗКА_ИСТОРИЧЕСКОЙ_БАЗЫ_ДАННЫХ...",
+    "calibrating": "КАЛИБРОВКА_КООРДИНАТ...",
+    "systemReady": "СИСТЕМА_ГОТОВА",
+    "skip": "ПРОПУСТИТЬ →"
+  },
+  "hud": {
+    "projectId": "EPHEMERA.CAPSULE.V1",
+    "coordinates": "КООРД: ГОД",
+    "yearBce": "{{year}} до н.э.",
+    "yearCe": "{{year}} н.э.",
+    "nominal": "СИС.НОРМА",
+    "init": "СИС.ИНИЦ",
+    "loading": "ДАННЫЕ.СИНХ",
+    "ready": "ДАННЫЕ.ОК",
+    "error": "СИС.ОШИБКА",
+    "timezone": "RU"
+  },
+  "log": {
+    "initSystem": "ИНИЦ_СИСТЕМА...",
+    "scanningCoords": "СКАНИРОВАНИЕ_ВРЕМЕННЫХ_КООРДИНАТ...",
+    "yearLock": "ГОД_ЗАБЛОКИРОВАН: {{year}}",
+    "searchCache": "ПОИСК_КЭША... ПРОМАХ",
+    "initReconstruction": "ИНИЦ_ПРОТОКОЛ_РЕКОНСТРУКЦИИ...",
+    "connecting": "ПОДКЛЮЧЕНИЕ_К_ВРЕМЕННОМУ_ПОТОКУ...",
+    "analyzing": "АНАЛИЗ_ИСТОРИЧЕСКИХ_ДАННЫХ...",
+    "extractingSymbols": "ИЗВЛЕЧЕНИЕ_КУЛЬТУРНЫХ_СИМВОЛОВ...",
+    "processingEvents": "ОБРАБОТКА_СОБЫТИЙ: {{count}}/5",
+    "generatingSynthesis": "ГЕНЕРАЦИЯ_СИНТЕЗА...",
+    "callingGeometry": "ВЫЗОВ_ГЕОМЕТРИЧЕСКОГО_ДВИЖКА...",
+    "meshGeneration": "ГЕНЕРАЦИЯ_СЕТКИ_В_ПРОЦЕССЕ...",
+    "textureSynthesis": "СИНТЕЗ_ТЕКСТУРЫ_АКТИВЕН...",
+    "materialCalc": "СВОЙСТВА_МАТЕРИАЛА_РАССЧИТАНЫ...",
+    "finalizingModel": "ЗАВЕРШЕНИЕ_3D_МОДЕЛИ...",
+    "uploadingArtifact": "ЗАГРУЗКА_АРТЕФАКТА...",
+    "verificationComplete": "ВЕРИФИКАЦИЯ_ЗАВЕРШЕНА",
+    "materializationReady": "МАТЕРИАЛИЗАЦИЯ_ГОТОВА",
+    "progress": "РЕКОНСТРУКЦИЯ",
+    "percent": "{{progress}}%"
+  },
+  "panel": {
+    "tapToExpand": "НАЖМИТЕ ДЛЯ РАСКРЫТИЯ ↑",
+    "collapse": "↓",
+    "viewArchives": "ПРОСМОТР АРХИВОВ",
+    "tapForDetails": "НАЖМИТЕ ДЛЯ ДЕТАЛЕЙ"
+  },
+  "archives": {
+    "title": "ИСТОРИЧЕСКИЕ АРХИВЫ",
+    "culturalSymbols": "КУЛЬТУРНЫЕ СИМВОЛЫ",
+    "generatedAt": "Создано {{date}}",
+    "archaeologistReport": "ОТЧЁТ ИНОПЛАНЕТНОГО АРХЕОЛОГА"
+  },
+  "chronometer": {
+    "yearBce": "{{year}} до н.э.",
+    "yearCe": "{{year}} н.э."
+  },
+  "year": {
+    "redirecting": "ПЕРЕНАПРАВЛЕНИЕ..."
+  },
+  "filter": {
+    "title": "ФИЛЬТР СТИЛЯ",
+    "default": "ПО УМОЛЧАНИЮ",
+    "blueprint": "ЧЕРТЁЖ",
+    "halftone": "ПОЛУТОН",
+    "ascii": "ASCII",
+    "pixel": "ПИКСЕЛЬ",
+    "sketch": "ЭСКИЗ",
+    "glitch": "ГЛИТЧ",
+    "crystal": "КРИСТАЛЛ",
+    "claymation": "ПЛАСТИЛИН"
   }
 }
