@@ -7,7 +7,7 @@ env:
   REGISTRY: crpi-ij9x44p6hsmr6cr5.cn-hangzhou.personal.cr.aliyuncs.com
   NAMESPACE: srm-project
   IMAGE_NAME: vestige
-  FULL_IMAGE_TAG: crpi-ij9x44p6hsmr6cr5.cn-hangzhou.personal.cr.aliyuncs.com/srm-project/vestige::latest
+  FULL_IMAGE_TAG: crpi-ij9x44p6hsmr6cr5.cn-hangzhou.personal.cr.aliyuncs.com/srm-project/vestige:latest
 
 jobs:
   build-and-push:
