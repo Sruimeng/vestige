@@ -269,7 +269,6 @@ export const CrystalMaterial = forwardRef<THREE.ShaderMaterial, CrystalMaterialP
       }
     }, [scene.environment]);
 
-    // Update uniforms when props change
     useEffect(() => {
       if (materialRef.current) {
         materialRef.current.uniforms.uCoreColor.value.set(coreColor);

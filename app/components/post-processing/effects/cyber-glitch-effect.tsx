@@ -90,16 +90,18 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 }
 `;
 
-interface CyberGlitchEffectImplProps {
+const DEFAULT_RESOLUTION = new Vector2(1920, 1080);
+
+interface CyberGlitchProps {
   strength?: number;
   resolution?: Vector2;
 }
 
-class CyberGlitchEffectImpl extends Effect {
+class CyberGlitch extends Effect {
   constructor({
     strength = 0.5,
-    resolution = new Vector2(1920, 1080),
-  }: CyberGlitchEffectImplProps = {}) {
+    resolution = DEFAULT_RESOLUTION,
+  }: CyberGlitchProps = {}) {
     super('CyberGlitchEffect', cyberGlitchFragmentShader, {
       blendFunction: BlendFunction.NORMAL,
       uniforms: new Map<string, Uniform>([
@@ -133,7 +135,7 @@ export const CyberGlitchEffect = forwardRef<Effect, CyberGlitchEffectProps>(
   function CyberGlitchEffect({ strength = 0.5 }, ref) {
     const effect = useMemo(
       () =>
-        new CyberGlitchEffectImpl({
+        new CyberGlitch({
           strength,
         }),
       [strength]

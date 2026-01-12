@@ -1,142 +1,58 @@
 ---
 id: index
-type: overview
-related_ids:
-  - constitution
-  - system-overview
-  - doc-standard
-  - technical-debt
-  - prd
-  - design-guide
-  - time-capsule-guide
+type: guide
+related_ids: [constitution, style-hemingway, doc-standard]
 ---
 
-# 📚 React Router v7 Template 文档中心
+# llmdoc Index
 
-> **项目名称**: react-router-v7-template  
-> **类型**: React Router v7 + React 19 模板仓库  
-> **状态**: ✅ 已清理完成，可用于新项目
+## Mandatory Reads
 
-## 🗂️ 文档导航
+**Read these first. They define the rules.**
 
-### 📐 架构文档 (Architecture)
+- [Constitution](./reference/constitution.md) - Graphics engine rules: matrix order, coordinate systems, shader patterns
+- [Hemingway Style](./reference/style-hemingway.md) - Code style law: iceberg principle, no fluff, forbidden patterns
 
-| 文档 | 描述 |
-|------|------|
-| [`system-overview.md`](./architecture/system-overview.md) | 系统架构概览与模块职责 |
+## Architecture
 
-### 📖 开发指南 (Guides)
+| Document | Purpose |
+|----------|---------|
+| [System Overview](./architecture/system-overview.md) | SPA architecture, route structure, API flow, state machine |
 
-| 文档 | 描述 |
-|------|------|
-| [`doc-standard.md`](./guides/doc-standard.md) | LLMDoc 文档规范 |
-| [`prd.md`](./guides/prd.md) | Ephemera: Time Capsule 产品需求文档 |
-| [`design-guide.md`](./guides/design-guide.md) | 深空终端美学设计规范 |
-| [`time-capsule-guide.md`](./guides/time-capsule-guide.md) | Time Capsule API 使用指南 (含 Future Fossils) |
-| [`prd-post-processing.md`](./guides/prd-post-processing.md) | 后处理与风格滤镜系统 PRD |
+## Reference
 
-### 🧠 策略记忆 (Agent Strategies)
+| Document | Purpose |
+|----------|---------|
+| [Constitution](./reference/constitution.md) | WebGL/Three.js rules, matrix order, coordinate system |
+| [Hemingway Style](./reference/style-hemingway.md) | Code style: terse, type-first, no meta-talk |
+| [Tech Stack](./reference/tech-stack.md) | React 19, React Router v7, Vite 7, UnoCSS, Zustand |
+| [Data Model](./reference/data-model.md) | Core types: TimeCapsuleData, SystemState, StyleFilter |
+| [Shared Utilities](./reference/shared-utilities.md) | Hooks: useDebounce, useThrottle, useRequest |
+| [Technical Debt](./reference/technical-debt.md) | Audit report: cleanup status |
 
-| 文档 | 描述 |
-|------|------|
-| [`strategy-blueprint-upgrade.md`](./agent/strategy-blueprint-upgrade.md) | Blueprint 工程蓝图滤镜升级策略 |
+## Guides
 
-### 📋 参考规范 (Reference)
+| Document | Purpose |
+|----------|---------|
+| [Doc Standard](./guides/doc-standard.md) | LLMDoc format: frontmatter, type-first, pseudocode |
+| [PRD](./guides/prd.md) | Product spec: Time Capsule system states, user journey |
+| [Design Guide](./guides/design-guide.md) | Deep Space Terminal aesthetic: colors, typography, HUD |
+| [Time Capsule Guide](./guides/time-capsule-guide.md) | API usage: endpoints, polling, error handling |
+| [Post-Processing PRD](./guides/prd-post-processing.md) | Style filters: blueprint, halftone, ascii, glitch |
 
-| 文档 | 描述 |
-|------|------|
-| [`constitution.md`](./reference/constitution.md) | 项目宪法 - 编码规范与技术栈 |
-| [`technical-debt.md`](./reference/technical-debt.md) | 🏥 技术债务报告 - 已清理完成 |
+## Agent Strategies
 
-## 🏗️ 项目结构
+| Document | Purpose |
+|----------|---------|
+| [Blueprint Upgrade](./agent/strategy-blueprint-upgrade.md) | Strategy: engineering blueprint filter implementation |
+
+## Quick Reference
 
 ```
-react-router-v7-template/
-├── app/                        # 应用源代码
-│   ├── entry.client.tsx        # 客户端入口
-│   ├── entry.server.tsx        # 服务端入口
-│   ├── root.tsx                # 根组件
-│   ├── root.css                # 全局样式
-│   ├── routes.ts               # 路由配置
-│   ├── .server/                # 服务端专用代码
-│   ├── components/             # 可复用组件
-│   ├── constants/              # 常量配置
-│   ├── hooks/                  # 自定义 Hooks
-│   ├── locales/                # 国际化 (7 种语言)
-│   ├── routes/                 # 路由页面
-│   ├── store/                  # Zustand 状态管理
-│   └── utils/                  # 工具函数
-├── llmdoc/                     # LLM 文档中心
-├── package.json                # 依赖配置
-├── vite.config.ts              # Vite 配置
-├── uno.config.ts               # UnoCSS 配置
-└── README.md                   # 项目说明
+Year Range: -500 to 2100
+API Timeout: 10s
+Poll Interval: 3s
+Max Poll Duration: 5min
+Coordinate System: Right-handed Y-up
+Matrix Order: Column-major
 ```
-
-## 🚀 快速开始
-
-```bash
-# 安装依赖
-pnpm install
-
-# 开发模式
-pnpm dev
-
-# 构建生产版本
-pnpm build-production
-
-# 构建测试版本
-pnpm build-staging
-
-# 类型检查
-pnpm typecheck
-
-# 代码检查
-pnpm lint
-```
-
-## 📦 技术栈
-
-### 核心依赖
-
-| 包名 | 版本 | 用途 |
-|------|------|------|
-| `react` | ^19.0.0 | UI 框架 |
-| `react-router` | ^7.6.2 | 路由管理 |
-| `zustand` | ^5.0.3 | 状态管理 |
-| `i18next` | ^24.2.1 | 国际化 |
-| `zod` | ^3.24.1 | 数据验证 |
-
-### 开发工具
-
-| 包名 | 版本 | 用途 |
-|------|------|------|
-| `vite` | ^6.3.5 | 构建工具 |
-| `typescript` | ^5.8.3 | 类型系统 |
-| `unocss` | ^66.2.0 | 原子化 CSS |
-| `eslint` | ^9.23.0 | 代码检查 |
-| `prettier` | ^3.3.3 | 代码格式化 |
-
-## 📝 文档更新日志
-
-| 日期 | 变更 |
-|------|------|
-| 2026-01-12 | 同步 Future Fossils API 支持和滤镜选择器重构 |
-| 2026-01-08 | 标准化重构 [`prd.md`](./guides/prd.md), [`design-guide.md`](./guides/design-guide.md), [`time-capsule-guide.md`](./guides/time-capsule-guide.md) |
-| 2026-01-07 | 完成技术债务清理，模板已纯洁化 |
-| 2026-01-07 | 更新文档反映实际项目结构 |
-| 2026-01-07 | 创建 [`technical-debt.md`](./reference/technical-debt.md) 技术债务报告 |
-| 2026-01-07 | 创建 [`constitution.md`](./reference/constitution.md) 项目宪法 |
-| 2026-01-07 | 创建 [`system-overview.md`](./architecture/system-overview.md) 系统架构 |
-
-## 🔗 相关链接
-
-- 项目宪法: [`constitution.md`](./reference/constitution.md)
-- 系统架构: [`system-overview.md`](./architecture/system-overview.md)
-- 文档规范: [`doc-standard.md`](./guides/doc-standard.md)
-- 技术债务: [`technical-debt.md`](./reference/technical-debt.md)
-- 产品需求: [`prd.md`](./guides/prd.md)
-- 设计规范: [`design-guide.md`](./guides/design-guide.md)
-- API 指南: [`time-capsule-guide.md`](./guides/time-capsule-guide.md)
-- 后处理系统: [`prd-post-processing.md`](./guides/prd-post-processing.md)
-- Blueprint 策略: [`strategy-blueprint-upgrade.md`](./agent/strategy-blueprint-upgrade.md)

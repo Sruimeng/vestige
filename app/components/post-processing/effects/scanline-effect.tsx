@@ -24,13 +24,13 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 }
 `;
 
-interface ScanlineEffectImplProps {
+interface ScanlineProps {
   density?: number;
   opacity?: number;
 }
 
-class ScanlineEffectImpl extends Effect {
-  constructor({ density = 1.5, opacity = 0.02 }: ScanlineEffectImplProps = {}) {
+class Scanline extends Effect {
+  constructor({ density = 1.5, opacity = 0.02 }: ScanlineProps = {}) {
     super('ScanlineEffect', scanlineFragmentShader, {
       blendFunction: BlendFunction.NORMAL,
       uniforms: new Map<string, Uniform>([
@@ -57,7 +57,7 @@ interface ScanlineEffectProps {
 export const ScanlineEffect = forwardRef<Effect, ScanlineEffectProps>(
   function ScanlineEffect({ density = 1.5, opacity = 0.02 }, ref) {
     const effect = useMemo(
-      () => new ScanlineEffectImpl({ density, opacity }),
+      () => new Scanline({ density, opacity }),
       [density, opacity]
     );
 

@@ -1,228 +1,195 @@
 ---
 id: constitution
 type: reference
-related_ids: [doc-standard, system-overview, index]
+related_ids: [doc-standard, tech-stack, data-model]
 ---
 
-# 📜 Constitution - React Router v7 Template 项目宪法
+# Constitution - Graphics Engine Rules
 
-> **项目名称**: react-router-v7-template  
-> **类型**: React Router v7 + React 19 模板仓库  
-> **状态**: ✅ 已清理完成，可用于新项目
-
-## 1. 项目定位
-
-```
-TYPE: Template Repository
-PURPOSE: 提供可复用的 React Router v7 项目起始结构
-TARGET: 快速启动新的 SSR/SPA 混合应用
-FEATURES:
-  - 服务端渲染 (SSR)
-  - 国际化 (7 种语言)
-  - 主题切换
-  - 状态管理 (Zustand)
-  - 表单验证 (Zod + React Hook Form)
-```
-
-## 2. 技术栈规范
-
-### 2.1 核心依赖
-
-| 类别 | 选型 | 版本 |
-|------|------|------|
-| **框架** | React | ^19.0.0 |
-| **路由** | React Router | ^7.6.2 |
-| **构建工具** | Vite | ^6.3.5 |
-| **语言** | TypeScript | ^5.8.3 |
-| **样式** | UnoCSS | ^66.2.0 |
-| **状态管理** | Zustand | ^5.0.3 |
-| **国际化** | i18next + remix-i18next | ^24.2.1 |
-| **表单** | React Hook Form + Zod | ^7.54.2 |
-| **主题** | remix-themes | ^2.0.1 |
-
-### 2.2 开发工具
-
-| 工具 | 版本 | 用途 |
-|------|------|------|
-| ESLint | ^9.23.0 | 代码检查 |
-| Prettier | ^3.3.3 | 代码格式化 |
-| Stylelint | ^16.14.1 | 样式检查 |
-| Husky | ^9.1.7 | Git Hooks |
-| pnpm | 9.6.0 | 包管理器 |
-
-## 3. 目录结构规范
-
-```
-react-router-v7-template/
-├── app/                        # 应用源代码 (React Router v7 约定)
-│   ├── entry.client.tsx        # 客户端入口
-│   ├── entry.server.tsx        # 服务端入口 (SSR)
-│   ├── root.tsx                # 根组件 (Layout)
-│   ├── root.css                # 全局样式
-│   ├── routes.ts               # 路由配置
-│   │
-│   ├── .server/                # 服务端专用代码
-│   ├── components/             # 可复用组件
-│   ├── constants/              # 常量配置
-│   ├── hooks/                  # 自定义 Hooks
-│   ├── locales/                # 国际化资源
-│   ├── routes/                 # 路由页面
-│   ├── store/                  # Zustand 状态管理
-│   └── utils/                  # 工具函数
-│
-├── llmdoc/                     # LLM 文档中心
-├── public/                     # 静态资源
-├── package.json                # 依赖配置
-├── vite.config.ts              # Vite 配置
-├── uno.config.ts               # UnoCSS 配置
-└── README.md                   # 项目说明
-```
-
-## 4. 编码规范
-
-### 4.1 命名约定
-
-```
-RULE: File Naming
-  - 组件文件: kebab-case (e.g., error-boundary.tsx, canonical.tsx)
-  - 工具文件: kebab-case (e.g., cookie.ts, storage.ts)
-  - Hook 文件: camelCase (e.g., debounce.ts, navigate.ts)
-  - 常量文件: kebab-case (e.g., env.ts, service.ts)
-
-RULE: Variable Naming
-  - 组件: PascalCase (e.g., ErrorBoundary, Header)
-  - 函数/变量: camelCase (e.g., useNavigateWithQuery)
-  - 常量: UPPER_SNAKE_CASE (e.g., CDNBaseURL, ApiURL)
-  - 类型/接口: PascalCase (e.g., RequestState, Period)
-```
-
-### 4.2 组件规范
+## 1. Type Definitions
 
 ```typescript
-// ✅ 正确：函数组件 + TypeScript
-interface ButtonProps {
-  label: string;
-  onClick: () => void;
-  variant?: 'primary' | 'secondary';
-}
+// Coordinate System
+type CoordinateSystem = 'right-handed-y-up';  // WebGL/THREE.js standard
 
-export function Button({ label, onClick, variant = 'primary' }: ButtonProps) {
-  return (
-    <button className={`btn btn-${variant}`} onClick={onClick}>
-      {label}
-    </button>
-  );
+// Matrix Storage
+type MatrixOrder = 'column-major';  // OpenGL convention
+
+// Precision
+type FloatComparison = (a: number, b: number, epsilon?: number) => boolean;
+const EPSILON = Number.EPSILON;
+
+// Shader Types (GLSL <-> JS mapping)
+interface UniformTypeMap {
+  float: number;
+  vec2: THREE.Vector2;
+  vec3: THREE.Vector3;
+  vec4: THREE.Vector4;
+  mat3: THREE.Matrix3;
+  mat4: THREE.Matrix4;
+  sampler2D: THREE.Texture;
 }
 ```
 
-### 4.3 状态管理规范
+## 2. Matrix Order
+
+```
+RULE: Column-Major Storage
+  THREE.js Matrix4.elements = [
+    m11, m21, m31, m41,  // column 0
+    m12, m22, m32, m42,  // column 1
+    m13, m23, m33, m43,  // column 2
+    m14, m24, m34, m44   // column 3
+  ]
+
+TRANSFORM ORDER: Scale -> Rotate -> Translate
+  matrix = T * R * S  // right-to-left multiplication
+```
+
+## 3. Coordinate System
+
+```
+SYSTEM: Right-Handed Y-Up
+
+AXES:
+  +X = Right
+  +Y = Up
+  +Z = Toward Camera (out of screen)
+
+ROTATION: Counter-clockwise when looking down axis
+  - Euler order default: 'XYZ'
+  - Quaternion: (x, y, z, w)
+
+NDC (Normalized Device Coordinates):
+  X: [-1, 1] left to right
+  Y: [-1, 1] bottom to top
+  Z: [-1, 1] near to far (WebGL)
+```
+
+## 4. Precision Rules
 
 ```typescript
-// ✅ 正确：Zustand Store 结构
-interface StoreState {
-  // 状态
-  count: number;
-  // 动作
-  increment: () => void;
-  reset: () => void;
+// Float Comparison
+function floatEquals(a: number, b: number): boolean {
+  return Math.abs(a - b) < Number.EPSILON;
 }
 
-const useStore = create<StoreState>((set) => ({
-  count: 0,
-  increment: () => set((state) => ({ count: state.count + 1 })),
-  reset: () => set({ count: 0 }),
-}));
+// Vector Comparison
+function vec3Equals(a: THREE.Vector3, b: THREE.Vector3): boolean {
+  return a.distanceTo(b) < Number.EPSILON;
+}
+
+// Angle Normalization
+function normalizeAngle(rad: number): number {
+  return ((rad % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+}
 ```
 
-### 4.4 路由规范 (React Router v7)
+## 5. Graphics Pipeline
+
+```
+POST-PROCESSING STACK (@react-three/postprocessing):
+
+  EffectComposer
+    └── Effects[] (order matters)
+        ├── Bloom          // glow extraction
+        ├── ChromaticAberration
+        ├── Vignette
+        └── ToneMapping    // always last
+
+EFFECT ORDER RULE:
+  1. Geometry effects (SSAO, SSR)
+  2. Color effects (ColorCorrection, HueSaturation)
+  3. Blur effects (Bloom, DOF)
+  4. Film effects (Grain, Vignette)
+  5. Tone mapping (final)
+```
+
+## 6. Shader Uniform Rules
 
 ```typescript
-// app/routes.ts - 文件路由配置
-import { type RouteConfig, index, route } from "@react-router/dev/routes";
+// Type Safety
+interface ShaderUniforms {
+  uTime: { value: number };           // float
+  uResolution: { value: THREE.Vector2 }; // vec2
+  uMouse: { value: THREE.Vector2 };   // vec2
+  uTexture: { value: THREE.Texture }; // sampler2D
+}
 
-export default [
-  index("routes/_index/route.tsx"),
-  route("api/set-locale", "routes/api.set-locale/route.tsx"),
-  route("api/set-theme", "routes/api.set-theme/route.tsx"),
-  route("*", "routes/404/route.tsx"),
-] satisfies RouteConfig;
+// Update Pattern
+useFrame((state) => {
+  materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+});
 ```
 
-## 5. 文档驱动开发 (Doc-Driven)
+## 7. Memory Rules
 
 ```
-PRINCIPLE: 文档先于代码
-  1. 在 llmdoc/reference/ 定义规范
-  2. 在 llmdoc/architecture/ 设计架构
-  3. 在 llmdoc/guides/ 编写开发指南
-  4. 然后才编写代码
+ALLOCATION:
+  - Pre-allocate typed arrays outside render loop
+  - Reuse Vector3/Matrix4 instances
+  - Pool geometries and materials
 
-WORKFLOW:
-  READ llmdoc/reference/constitution.md
-  → DESIGN in llmdoc/architecture/
-  → IMPLEMENT code
-  → UPDATE llmdoc/guides/
+DISPOSAL:
+  geometry.dispose()
+  material.dispose()
+  texture.dispose()
+  renderer.dispose()
 ```
 
-## 6. 国际化规范
+## 8. Forbidden Patterns
 
 ```
-SUPPORTED_LANGUAGES:
-  - en (English) - 默认
-  - zh (中文)
-  - ja (日本語)
-  - ko (한국어)
-  - es (Español)
-  - pt (Português)
-  - ru (Русский)
+RENDER LOOP VIOLATIONS:
+  - new Float32Array() in useFrame
+  - new THREE.Vector3() in useFrame
+  - JSON.parse/stringify in animation
+  - Array.map creating new arrays each frame
 
-FILE_STRUCTURE:
-  app/locales/{lang}/
-    ├── common.json      # 通用文本
-    └── error-toast.json # 错误提示
+ARCHITECTURE VIOLATIONS:
+  - Nesting depth > 3 levels
+  - Bureaucratic naming (AbstractManagerImpl, FactoryFactory)
+  - God components (>300 lines)
+  - Inline shader strings (use .glsl files)
 
-USAGE:
-  import { useTranslation } from 'react-i18next';
-  const { t } = useTranslation();
-  t('common.key')
+TYPE VIOLATIONS:
+  - any type
+  - Direct float equality (a === b)
+  - Untyped uniforms
 ```
 
-## ⛔ 禁止事项 (Do NOTs)
+## 9. R3F Patterns
 
-- 🚫 **不要**使用 `any` 类型，必须定义明确的类型
-- 🚫 **不要**在组件中直接调用 API，使用 loader/action
-- 🚫 **不要**使用 `var`，使用 `const` 或 `let`
-- 🚫 **不要**在没有文档的情况下添加新功能
-- 🚫 **不要**硬编码配置值，使用环境变量或配置文件
-- 🚫 **不要**忽略 TypeScript 错误，必须修复
-- 🚫 **不要**在 Store 中存储可派生的状态
-- 🚫 **不要**跳过 loader/action 直接在组件中 fetch
-- 🚫 **不要**添加业务特定代码到模板中
+```typescript
+// Ref Pattern
+const meshRef = useRef<THREE.Mesh>(null);
 
-## 7. 版本控制规范
+// Frame Loop
+useFrame((state, delta) => {
+  if (!meshRef.current) return;
+  meshRef.current.rotation.y += delta;
+});
 
-### 7.1 Commit Message 格式
-
-```
-TYPE(scope): description
-
-TYPE:
-  - feat: 新功能
-  - fix: 修复 bug
-  - docs: 文档更新
-  - style: 代码格式 (不影响功能)
-  - refactor: 重构
-  - test: 测试相关
-  - chore: 构建/工具相关
-
-EXAMPLE:
-  feat(auth): add login component
-  fix(api): handle network timeout
-  docs(readme): update installation guide
+// Disposal
+useEffect(() => {
+  return () => {
+    geometry.dispose();
+    material.dispose();
+  };
+}, []);
 ```
 
-## 8. 相关文档
+## 10. Performance Thresholds
 
-- 文档规范: [doc-standard.md](../guides/doc-standard.md)
-- 系统概览: [system-overview.md](../architecture/system-overview.md)
-- 技术债务: [technical-debt.md](./technical-debt.md)
+```
+TARGETS:
+  - 60 FPS minimum
+  - Draw calls < 100
+  - Triangles < 1M per frame
+  - Texture memory < 512MB
+
+MONITORING:
+  - useFrame delta > 16.67ms = frame drop
+  - renderer.info.render.calls
+  - renderer.info.memory.geometries
+```

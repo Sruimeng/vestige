@@ -1,125 +1,351 @@
 ---
 id: system-overview
 type: architecture
-related_ids: [constitution, doc-standard, index]
+related_ids: [doc-standard]
 ---
 
-# 📐 系统架构概览
+# System Overview
 
-> **项目名称**: react-router-v7-template  
-> **类型**: React Router v7 + React 19 模板仓库  
-> **状态**: ✅ 已清理完成，可用于新项目
+## Architecture Type
 
-## 1. 项目概述
-
-```
-PROJECT_TYPE: Template Repository
-FRAMEWORK: React Router v7 (SSR/SPA Hybrid)
-REACT_VERSION: 19.0.0
-BUILD_TOOL: Vite 6.3.5
-PACKAGE_MANAGER: pnpm 9.6.0
+```typescript
+type Architecture = 'SPA';
+type Framework = 'React Router v7';
+type RenderMode = 'CSR'; // SSR disabled
 ```
 
-## 2. 项目结构
-
-```
-react-router-v7-template/
-├── app/                        # 应用源代码 (React Router v7 约定)
-│   ├── entry.client.tsx        # 客户端入口
-│   ├── entry.server.tsx        # 服务端入口 (SSR)
-│   ├── root.tsx                # 根组件 (Layout)
-│   ├── root.css                # 全局样式
-│   ├── routes.ts               # 路由配置
-│   │
-│   ├── .server/                # 服务端专用代码
-│   ├── components/             # 可复用组件
-│   ├── constants/              # 常量配置
-│   ├── hooks/                  # 自定义 Hooks
-│   ├── locales/                # 国际化 (7 种语言)
-│   ├── routes/                 # 路由页面
-│   ├── store/                  # Zustand 状态管理
-│   └── utils/                  # 工具函数
-│
-├── llmdoc/                     # LLM 文档中心
-├── public/                     # 静态资源
-├── package.json                # 依赖配置
-├── vite.config.ts              # Vite 配置
-├── uno.config.ts               # UnoCSS 配置
-└── README.md                   # 项目说明
+**Config:** `react-router.config.ts`
+```typescript
+{ ssr: false, routeDiscovery: { mode: 'initial' } }
 ```
 
-## 3. 数据流架构
+## Route Structure
 
-```
-Browser -> entry.server.tsx (SSR) -> root.tsx (Layout)
-                                        |
-                                        v
-                                   Routes (页面)
-                                        |
-                    +-------------------+-------------------+
-                    |                   |                   |
-                    v                   v                   v
-                 Hooks              Store               Utils
-              (useXxx)           (Zustand)           (工具函数)
-                    |                   |
-                    +-------------------+
-                            |
-                            v
-                      Backend API
+```typescript
+type RouteMap = {
+  '/': IndexRoute;           // Main time capsule interface
+  '/:year': YearRoute;        // Direct year access (redirects to /)
+  '/*': NotFoundRoute;        // 404 handler
+};
 ```
 
-## 4. 技术栈
+**Flow:**
+```
+ROUTE /:year
+  1. Parse year param (-500 to 2100)
+  2. Validate range & format
+  3. IF valid THEN navigate('/', { state: { initialYear } })
+  4. ELSE navigate('/')
 
-### 核心依赖
+ROUTE /
+  1. Read location.state.initialYear
+  2. IF exists THEN setYear(initialYear)
+  3. Clear state via replaceState()
+```
 
-| 包名 | 版本 | 用途 |
-|------|------|------|
-| react | ^19.0.0 | UI 框架 |
-| react-router | ^7.6.2 | 路由管理 |
-| zustand | ^5.0.3 | 状态管理 |
-| i18next | ^24.2.1 | 国际化 |
-| zod | ^3.24.1 | 数据验证 |
+## API Surface
 
-### 开发依赖
+### Dual API System
 
-| 包名 | 版本 | 用途 |
-|------|------|------|
-| vite | ^6.3.5 | 构建工具 |
-| typescript | ^5.8.3 | 类型系统 |
-| unocss | ^66.2.0 | 原子化 CSS |
-| eslint | ^9.23.0 | 代码检查 |
-| prettier | ^3.3.3 | 代码格式化 |
+```typescript
+interface ApiConfig {
+  timeCapsule: '/api/time-capsule/:year';  // year < currentYear
+  futureFossils: '/api/future-fossils/:year'; // year >= currentYear
+}
 
-## 5. 模块职责
+FUNCTION getApiEndpoint(year: number): string
+  IF year >= getCurrentYear() THEN
+    RETURN '/api/future-fossils/:year'
+  ELSE
+    RETURN '/api/time-capsule/:year'
+```
 
-### Routes (路由页面)
-- 位置: app/routes/
-- 职责: 页面布局, loader/action
+### Response Types
 
-### Components (组件)
-- 位置: app/components/
-- 职责: 可复用 UI 组件
+```typescript
+// 200: Cache hit
+interface SuccessResponse {
+  data: CapsuleData;
+}
 
-### Hooks (钩子)
-- 位置: app/hooks/
-- 职责: 状态逻辑封装
+// 202: Generating
+interface GeneratingResponse {
+  status: 'started' | 'generating';
+  year: number;
+  estimated_seconds: number;
+}
 
-### Store (状态)
-- 位置: app/store/
-- 职责: 全局状态管理
+// 400: Invalid year
+interface ErrorResponse {
+  error: 'invalid_year' | 'generation_failed';
+  message: string;
+}
+```
 
-### Utils (工具)
-- 位置: app/utils/
-- 职责: 纯函数工具
+### Data Types
 
-## ⛔ 禁止事项
+```typescript
+// Time Capsule (historical)
+interface TimeCapsuleData {
+  year: number;
+  year_display: string;
+  events: HistoryEvent[];
+  symbols: string[];
+  synthesis: string;
+  philosophy: string;
+  model_url: string;
+  generated_at: string;
+}
 
-- 🚫 不要在 Components 中直接调用 API
-- 🚫 不要在 Routes 中定义可复用组件
-- 🚫 不要跳过 loader/action 直接 fetch
-- 🚫 不要在 Store 中存储可派生状态
+// Future Fossils (future years)
+interface FutureFossilsData extends TimeCapsuleData {
+  mode: 'history' | 'misread';
+  events: FossilEvent[];
+  archaeologist_report?: string; // Misread mode only
+}
 
-## 相关文档
+type CapsuleData = TimeCapsuleData | FutureFossilsData;
+```
 
-- [constitution.md](../reference/constitution.md)
-- [doc-standard.md](../guides/doc-standard.md)
+## Request Flow
+
+```
+USER ACTION: setYear(year)
+  ↓
+HOOK: useTimeCapsule.handleYearChange()
+  ↓
+STORE: setSystemState('SCROLLING')
+  ↓
+DEBOUNCE: 500ms
+  ↓
+STORE: setSystemState('CHECKING')
+  ↓
+API: fetchOnce(url)
+  ├─ 200 → RETURN { type: 'success', data }
+  ├─ 202 → RETURN { type: 'generating', waitSeconds }
+  ├─ 400 → THROW InvalidYearError
+  └─ 5xx → RETURN { type: 'retry' }
+  ↓
+IF type === 'success'
+  STORE: setSystemState('MATERIALIZED')
+  STORE: setCapsuleData(data)
+ELSE IF type === 'generating'
+  STORE: setSystemState('CONSTRUCTING')
+  POLL: every 3s (max 5min)
+    ↓
+    REPEAT fetchOnce() UNTIL success OR timeout
+    ↓
+    STORE: setSystemState('MATERIALIZED')
+ELSE IF InvalidYearError OR NetworkError
+  FALLBACK: generateMockData(year)
+  STORE: setSystemState('MATERIALIZED')
+  STORE: setCapsuleData(mockData) // model_url = ''
+```
+
+### Polling Mechanism
+
+```typescript
+const POLL_INTERVAL = 3000;        // 3s between requests
+const MAX_POLL_DURATION = 300000;  // 5min total timeout
+const API_TIMEOUT = 10000;         // 10s per request
+
+WHILE result.type !== 'success'
+  1. CHECK abortController.signal
+  2. CHECK elapsed < MAX_POLL_DURATION
+  3. WAIT result.waitSeconds OR POLL_INTERVAL
+  4. RETRY fetchOnce()
+```
+
+## State Management
+
+### Zustand Store
+
+```typescript
+interface TimeCapsuleStore {
+  currentYear: number;           // Default: 2026
+  systemState: SystemState;      // Default: 'IDLE'
+  capsuleData: CapsuleData | null;
+  error: string | null;
+  progress: number;              // 0-100 for CONSTRUCTING
+}
+```
+
+### System States (6 States)
+
+```typescript
+type SystemState =
+  | 'IDLE'          // Initial, awaiting input
+  | 'SCROLLING'     // User rapidly changing year
+  | 'CHECKING'      // Debounced, querying API
+  | 'CONSTRUCTING'  // 202 received, polling for completion
+  | 'MATERIALIZED'  // Data loaded, model rendered
+  | 'ERROR';        // Unrecoverable error
+
+STATE TRANSITIONS:
+  IDLE → SCROLLING (user input)
+  SCROLLING → CHECKING (debounce 500ms)
+  CHECKING → CONSTRUCTING (202 response)
+  CHECKING → MATERIALIZED (200 response)
+  CONSTRUCTING → MATERIALIZED (poll success)
+  * → ERROR (fatal error)
+```
+
+## Component Hierarchy
+
+```
+App
+├─ BootSequence (startup animation)
+└─ StyleFilterProvider (post-processing wrapper)
+   └─ motion.div (main container)
+      ├─ SceneCanvas (Three.js R3F)
+      │  ├─ HologramWireframe (CONSTRUCTING state)
+      │  ├─ ArtifactModel (MATERIALIZED + model_url)
+      │  └─ PlaceholderSphere (MATERIALIZED + no model_url)
+      │
+      ├─ HUDOverlay (status display)
+      │  ├─ CornerFrames
+      │  ├─ Crosshair
+      │  ├─ StatusIndicator
+      │  ├─ Timestamp
+      │  ├─ Coordinates
+      │  ├─ SignalBar
+      │  └─ FilterSelector
+      │
+      ├─ Chronometer (year selector)
+      │  ├─ Desktop: vertical slider (right side)
+      │  └─ Mobile: horizontal buttons (bottom)
+      │
+      ├─ LogStream (CONSTRUCTING state)
+      │  └─ Progress animation + logs
+      │
+      ├─ PhilosophyPanel (MATERIALIZED state)
+      │  └─ synthesis + philosophy + tap to expand
+      │
+      ├─ ArchivesSheet (drawer)
+      │  ├─ Events list
+      │  ├─ Symbols
+      │  └─ Archaeologist report (Misread mode)
+      │
+      └─ ErrorPanel (ERROR state)
+```
+
+### Component State Mapping
+
+```typescript
+FUNCTION getHUDStatus(systemState: SystemState): HUDStatus
+  MATCH systemState
+    'IDLE' → 'INIT'
+    'SCROLLING' | 'CHECKING' | 'CONSTRUCTING' → 'LOADING'
+    'MATERIALIZED' → 'READY'
+    'ERROR' → 'ERROR'
+```
+
+## Rendering Logic
+
+```typescript
+// Scene rendering
+IF systemState === 'CONSTRUCTING'
+  RENDER <HologramWireframe isAnimating />
+
+IF systemState === 'MATERIALIZED'
+  IF capsuleData.model_url !== ''
+    RENDER <ArtifactModel url={model_url} />
+  ELSE
+    RENDER <PlaceholderSphere />
+
+// HUD panels
+IF systemState === 'CONSTRUCTING'
+  RENDER <LogStream year={year} progress={progress} />
+
+IF systemState === 'MATERIALIZED' AND capsuleData
+  RENDER <PhilosophyPanel data={capsuleData} />
+
+IF systemState === 'ERROR'
+  RENDER <ErrorPanel />
+
+IF systemState === 'IDLE'
+  RENDER <HintOverlay /> // "Select a year"
+```
+
+## Constraints
+
+### Negative Constraints
+
+- 🚫 DO NOT use year 0 (historically invalid)
+- 🚫 DO NOT allow year < -500 OR year > 2100
+- 🚫 DO NOT poll beyond MAX_POLL_DURATION (5min)
+- 🚫 DO NOT render ArtifactModel if model_url is empty
+- 🚫 DO NOT show archaeologist_report unless mode === 'misread'
+- 🚫 DO NOT use SSR (config: ssr: false)
+
+### API Constraints
+
+```typescript
+// Year validation
+YEAR_MIN = -500;
+YEAR_MAX = 2100;
+INVALID_YEAR = 0;
+
+// Timeout hierarchy
+API_TIMEOUT = 10s;          // Single request
+POLL_INTERVAL = 3s;         // Between polls
+MAX_POLL_DURATION = 5min;   // Total polling time
+```
+
+### Model URL Processing
+
+```typescript
+FUNCTION processModelUrl(url: string): string
+  IF url === '' THEN RETURN ''
+
+  url = url.replace('http:', 'https:')
+
+  IF url.includes('tripo3d.com') THEN
+    RETURN '/api/proxy-model?url=' + encodeURIComponent(url)
+
+  RETURN url
+```
+
+## Performance Optimizations
+
+```typescript
+// Debouncing
+const DEBOUNCE_DELAY = 500; // ms
+
+// Abort previous requests
+abortControllerRef.current?.abort();
+
+// Progress simulation (CONSTRUCTING state)
+INTERVAL 1s:
+  progress = 5 + (elapsed / MAX_POLL_DURATION) * 90
+  progress = min(progress, 95)
+```
+
+## Error Handling
+
+```typescript
+TRY
+  fetchCapsule(year)
+CATCH error
+  IF error.name === 'AbortError'
+    RETURN // User cancelled
+
+  IF error.name === 'InvalidYearError' OR error.name === 'NetworkError'
+    // Fallback to mock data
+    mockData = generateMockDataForYear(year)
+    mockData.model_url = '' // Triggers PlaceholderSphere
+    setCapsuleData(mockData)
+    setSystemState('MATERIALIZED')
+  ELSE
+    setSystemState('ERROR')
+    setError(error.message)
+```
+
+## Related Files
+
+- Routes: [`app/routes/_index.tsx`](../../app/routes/_index.tsx), [`app/routes/$year.tsx`](../../app/routes/$year.tsx)
+- Hook: [`app/hooks/use-time-capsule.ts`](../../app/hooks/use-time-capsule.ts)
+- Store: [`app/store/time-capsule.ts`](../../app/store/time-capsule.ts)
+- Types: [`app/types/time-capsule.ts`](../../app/types/time-capsule.ts)
+- API Config: [`app/constants/api.ts`](../../app/constants/api.ts)
+- Router Config: [`react-router.config.ts`](../../react-router.config.ts)

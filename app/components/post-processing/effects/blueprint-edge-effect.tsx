@@ -52,20 +52,23 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 }
 `;
 
-interface BlueprintEdgeEffectImplProps {
+const DEFAULT_EDGE_COLOR = new Color('#00FFFF');
+const DEFAULT_RESOLUTION = new Vector2(1920, 1080);
+
+interface BlueprintEdgeEffectProps {
   edgeColor?: Color;
   threshold?: number;
   edgeWidth?: number;
   resolution?: Vector2;
 }
 
-class BlueprintEdgeEffectImpl extends Effect {
+class BlueprintEdge extends Effect {
   constructor({
-    edgeColor = new Color('#00FFFF'),
+    edgeColor = DEFAULT_EDGE_COLOR,
     threshold = 0.1,
     edgeWidth = 1.0,
-    resolution = new Vector2(1920, 1080),
-  }: BlueprintEdgeEffectImplProps = {}) {
+    resolution = DEFAULT_RESOLUTION,
+  }: BlueprintEdgeEffectProps = {}) {
     super('BlueprintEdgeEffect', blueprintEdgeFragmentShader, {
       blendFunction: BlendFunction.NORMAL,
       uniforms: new Map<string, Uniform>([
@@ -85,20 +88,20 @@ class BlueprintEdgeEffectImpl extends Effect {
   }
 }
 
-interface BlueprintEdgeEffectProps {
+interface BlueprintEdgeProps {
   edgeColor?: string;
   threshold?: number;
   edgeWidth?: number;
 }
 
-export const BlueprintEdgeEffect = forwardRef<Effect, BlueprintEdgeEffectProps>(
+export const BlueprintEdgeEffect = forwardRef<Effect, BlueprintEdgeProps>(
   function BlueprintEdgeEffect(
     { edgeColor = '#00FFFF', threshold = 0.25, edgeWidth = 1.5 },
     ref
   ) {
     const effect = useMemo(
       () =>
-        new BlueprintEdgeEffectImpl({
+        new BlueprintEdge({
           edgeColor: new Color(edgeColor),
           threshold,
           edgeWidth,
