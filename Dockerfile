@@ -7,6 +7,7 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 ARG VITE_API_BASE_URL
+ARG VITE_BASE_URL
 ARG VITE_USE_MOCK=false
 RUN pnpm build-production
 
