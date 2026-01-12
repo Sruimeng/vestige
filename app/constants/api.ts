@@ -3,7 +3,7 @@
  */
 
 // API 基础 URL
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+export const API_BASE_URL = 'https://api.sruim.xin';
 
 // 是否使用 Mock 数据（当 API 不可用时）
 export const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true';
