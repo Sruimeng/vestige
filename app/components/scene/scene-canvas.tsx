@@ -141,8 +141,8 @@ export function SceneCanvas({ children, className = '' }: SceneCanvasProps) {
           {/* 光照系统 */}
           <LightingRig />
 
-          {/* 环境贴图 - Night 风格，高对比度用于水晶反射 */}
-          <Environment preset="studio" environmentIntensity={0.7} background={false} />
+          {/* 环境贴图 - 使用本地 HDR */}
+          <Environment files="/static/hdr/studio.hdr" environmentIntensity={0.7} background={false} />
 
           {/* 雾效 - 增加深度感 */}
           <fog attach="fog" args={['#050505', 8, 30]} />
