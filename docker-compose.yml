@@ -1,6 +1,9 @@
+version: '3'
+
 services:
   vestige:
     image: ${ALIYUN_IMAGE:-vestige:latest}
+    # ⚠️ 关键：必须叫 vestige_app，因为你的 Caddyfile 里写的是 reverse_proxy vestige_app:8000
     container_name: vestige_app
     restart: always
     env_file:
@@ -8,9 +11,14 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - NODE_ENV=production
+      # 确保你的应用监听 8000 (或者你在 Caddyfile 里改成应用实际监听的端口)
+      - PORT=8000
+    # ❌ 删掉 ports，不要占用宿主机端口
+    # ports:
+    #   - "80:80"
     networks:
       - app_network
 
 networks:
   app_network:
-    external: true
+    external: true # 加入同一个网络
