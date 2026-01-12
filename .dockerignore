@@ -1,0 +1,10 @@
+node_modules
+dist
+pruned
+.git
+.github
+*.md
+.env*
+!.env.example
+llmdoc
+.husky
