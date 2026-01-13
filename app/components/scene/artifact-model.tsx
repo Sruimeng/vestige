@@ -1,14 +1,14 @@
 /**
  * GLB 模型加载器
- * 深空终端美学 - 加载真实 3D 模型，支持材质替换
  */
 
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { Suspense, useEffect, useRef, useMemo } from 'react';
+import { Suspense, useEffect, useRef, useMemo, useState } from 'react';
 import * as THREE from 'three';
 import type { Group, Mesh } from 'three';
 import { useStyleFilter } from '@/components/post-processing';
+import { fetchModelAsBlob } from '@/constants/api';
 import {
   BlueprintMaterial,
   HalftoneMaterial,
@@ -26,7 +26,6 @@ interface ArtifactModelProps {
   onError?: (error: Error) => void;
 }
 
-// 需要材质替换的滤镜列表 (glitch 改用后处理，不再需要材质)
 const MATERIAL_FILTERS = [
   'blueprint',
   'halftone',
@@ -43,7 +42,6 @@ function isMaterialFilter(filter: string): filter is MaterialFilter {
   return MATERIAL_FILTERS.includes(filter as MaterialFilter);
 }
 
-// 根据滤镜类型返回对应材质组件
 function FilterMaterial({ filter }: { filter: MaterialFilter }) {
   switch (filter) {
     case 'blueprint':
@@ -71,7 +69,6 @@ function ModelContent({ url, onLoad }: { url: string; onLoad?: () => void }) {
   const hasCalledOnLoad = useRef(false);
   const { filter } = useStyleFilter();
 
-  // 克隆场景以便修改材质
   const clonedScene = useMemo(() => scene.clone(), [scene]);
 
   useEffect(() => {
@@ -82,7 +79,6 @@ function ModelContent({ url, onLoad }: { url: string; onLoad?: () => void }) {
     onLoad();
   }, [onLoad]);
 
-  // 轻微浮动动画
   useFrame((state) => {
     if (groupRef.current) {
       groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
@@ -90,14 +86,12 @@ function ModelContent({ url, onLoad }: { url: string; onLoad?: () => void }) {
     }
   });
 
-  // 获取模型的几何体用于自定义材质渲染
   const geometries = useMemo(() => {
     const geos: { geometry: THREE.BufferGeometry; matrix: THREE.Matrix4 }[] = [];
     scene.traverse((child) => {
       if ((child as Mesh).isMesh) {
         const mesh = child as Mesh;
         if (mesh.geometry) {
-          // 保存几何体和变换矩阵
           geos.push({
             geometry: mesh.geometry,
             matrix: mesh.matrixWorld.clone(),
@@ -113,18 +107,14 @@ function ModelContent({ url, onLoad }: { url: string; onLoad?: () => void }) {
 
   return (
     <group ref={groupRef}>
-      {/* 原始模型（默认模式显示） */}
       {!useMaterialFilter && <primitive object={clonedScene} scale={3} />}
 
-      {/* 材质替换模式 */}
       {useMaterialFilter &&
         geometries.map((item, i) => (
           <group key={i}>
-            {/* 主体材质 */}
             <mesh geometry={item.geometry} scale={3}>
               <FilterMaterial filter={filter as MaterialFilter} />
             </mesh>
-            {/* Sketch 滤镜额外渲染描边层 */}
             {isSketchFilter && (
               <mesh geometry={item.geometry} scale={3}>
                 <SketchOutlineMaterial />
@@ -136,21 +126,48 @@ function ModelContent({ url, onLoad }: { url: string; onLoad?: () => void }) {
   );
 }
 
-export function ArtifactModel({ url, onLoad }: ArtifactModelProps) {
-  if (!url) {
-    return null;
-  }
+function ModelLoader({ url, onLoad, onError }: ArtifactModelProps) {
+  const [blobUrl, setBlobUrl] = useState<string | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    let revoke: string | null = null;
+
+    fetchModelAsBlob(url)
+      .then((result) => {
+        setBlobUrl(result);
+        if (result !== url) revoke = result;
+      })
+      .catch((err) => {
+        setError(err);
+        onError?.(err);
+      });
+
+    return () => {
+      if (revoke) URL.revokeObjectURL(revoke);
+    };
+  }, [url, onError]);
+
+  if (error) return null;
+  if (!blobUrl) return null;
 
   return (
     <Suspense fallback={null}>
-      <ModelContent url={url} onLoad={onLoad} />
+      <ModelContent url={blobUrl} onLoad={onLoad} />
     </Suspense>
   );
 }
 
-// 预加载模型
+export function ArtifactModel({ url, onLoad, onError }: ArtifactModelProps) {
+  if (!url) return null;
+
+  return <ModelLoader url={url} onLoad={onLoad} onError={onError} />;
+}
+
 export function preloadModel(url: string) {
   if (url) {
-    useGLTF.preload(url);
+    fetchModelAsBlob(url).then((blobUrl) => {
+      useGLTF.preload(blobUrl);
+    });
   }
 }

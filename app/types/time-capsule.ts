@@ -3,6 +3,8 @@
  * 根据 time-capsule-guide.md 和 future-fossils-guide.md 规范
  */
 
+import { z } from 'zod';
+
 /** 历史事件分类 (Time Capsule) */
 export type EventCategory = 'politics' | 'technology' | 'culture' | 'economy' | 'science';
 
@@ -136,3 +138,170 @@ export const FOSSIL_CATEGORY_COLORS: Record<FossilEventCategory, string> = {
   ritual: '#EC4899', // pink
   unknown: '#6B7280', // gray
 };
+
+// ============================================================================
+// API v5.0 Types
+// ============================================================================
+
+/** 新闻条目 (Daily API) */
+export interface NewsItem {
+  title: string;
+  content: string;
+}
+
+/** v5 历史事件 Zod Schema */
+export const HistoryEventSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  category: z.enum(['politics', 'technology', 'culture', 'economy', 'science']),
+});
+
+/** v5 新闻条目 Zod Schema */
+export const NewsItemSchema = z.object({
+  title: z.string(),
+  content: z.string(),
+});
+
+/** v5 History Context (替代 TimeCapsuleData) */
+export interface HistoryContext {
+  context_id: string;
+  year: number;
+  year_display: string;
+  events: HistoryEvent[];
+  symbols: string[];
+  synthesis: string;
+  philosophy: string;
+  suggested_prompt: string;
+}
+
+/** v5 History Context Zod Schema */
+export const HistoryContextSchema = z.object({
+  context_id: z.string(),
+  year: z.number(),
+  year_display: z.string(),
+  events: z.array(HistoryEventSchema),
+  symbols: z.array(z.string()),
+  synthesis: z.string(),
+  philosophy: z.string(),
+  suggested_prompt: z.string(),
+});
+
+/** v5 Daily Context (替代 FutureFossilsData) */
+export interface DailyContext {
+  context_id: string;
+  date: string;
+  news: NewsItem[];
+  philosophy: string;
+  suggested_prompt: string;
+  keywords: string[];
+}
+
+/** v5 Daily Context Zod Schema */
+export const DailyContextSchema = z.object({
+  context_id: z.string(),
+  date: z.string(),
+  news: z.array(NewsItemSchema),
+  philosophy: z.string(),
+  suggested_prompt: z.string(),
+  keywords: z.array(z.string()),
+});
+
+/** v5 Context 联合类型 */
+export type ContextData = HistoryContext | DailyContext;
+
+/** 判断是否为 History Context */
+export function isHistoryContext(data: ContextData): data is HistoryContext {
+  return 'year' in data && 'events' in data;
+}
+
+/** 判断是否为 Daily Context */
+export function isDailyContext(data: ContextData): data is DailyContext {
+  return 'date' in data && 'news' in data;
+}
+
+// ============================================================================
+// Forge API Types
+// ============================================================================
+
+/** Forge 任务状态 */
+export type ForgeStatus = 'pending' | 'processing' | 'completed' | 'failed';
+
+/** Forge 创建请求 */
+export interface ForgeCreateRequest {
+  context_id: string;
+  modifier?: string;
+  style?: string;
+}
+
+/** Forge 创建响应 */
+export interface ForgeCreateResponse {
+  task_id: string;
+  status: ForgeStatus;
+  message: string;
+}
+
+/** Forge 状态响应 */
+export interface ForgeStatusResponse {
+  task_id: string;
+  status: ForgeStatus;
+  model_url: string | null;
+  error_message: string | null;
+  progress_percent: number;
+}
+
+/** Forge 状态 Zod Schema */
+export const ForgeStatusSchema = z.object({
+  task_id: z.string(),
+  status: z.enum(['pending', 'processing', 'completed', 'failed']),
+  model_url: z.string().nullable(),
+  error_message: z.string().nullable(),
+  progress_percent: z.number(),
+});
+
+/** Forge 创建响应 Zod Schema */
+export const ForgeCreateResponseSchema = z.object({
+  task_id: z.string(),
+  status: z.enum(['pending', 'processing', 'completed', 'failed']),
+  message: z.string(),
+});
+
+/** Forge Asset */
+export interface ForgeAsset {
+  task_id: string;
+  status: ForgeStatus;
+  model_url: string | null;
+}
+
+/** Forge Assets 响应 */
+export interface ForgeAssetsResponse {
+  context_id: string;
+  assets: ForgeAsset[];
+}
+
+/** Forge Asset Zod Schema */
+export const ForgeAssetSchema = z.object({
+  task_id: z.string(),
+  status: z.enum(['pending', 'processing', 'completed', 'failed']),
+  model_url: z.string().nullable(),
+});
+
+/** Forge Assets 响应 Zod Schema */
+export const ForgeAssetsResponseSchema = z.object({
+  context_id: z.string(),
+  assets: z.array(ForgeAssetSchema),
+});
+
+// ============================================================================
+// API v5 Response Wrappers
+// ============================================================================
+
+/** v5 API 成功响应包装 */
+export interface ApiV5Response<T> {
+  data: T;
+}
+
+/** v5 API 错误响应 */
+export interface ApiV5Error {
+  code: string;
+  message: string;
+}
