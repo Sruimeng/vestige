@@ -3,10 +3,10 @@
  */
 
 // API 基础 URL
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:2999';
+export const API_BASE_URL = 'https://api.sruim.xin';
 
 // App ID (用于 API 认证)
-export const APP_ID = import.meta.env.VITE_APP_ID || '204bb605-dd38-4c3b-90b5-d1055310051b';
+export const APP_ID = '204bb605-dd38-4c3b-90b5-d1055310051b';
 
 // 是否使用 Mock 数据（当 API 不可用时）
 export const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true';
