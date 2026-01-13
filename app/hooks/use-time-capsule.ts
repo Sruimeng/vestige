@@ -226,8 +226,9 @@ type FetchResult =
 // useTimeCapsule Hook
 // ============================================================================
 
-export function useTimeCapsule() {
+export function useTimeCapsule(initialYear?: number) {
   const store = useTimeCapsuleStore();
+  const initializedRef = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const progressTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -436,8 +437,8 @@ export function useTimeCapsule() {
         }
 
         store.setCapsuleData(data);
-        store.setSystemState('MATERIALIZED');
-        store.setProgress(100);
+        store.setSystemState('LOADING_MODEL');
+        store.setProgress(95);
       } catch (error) {
         clearProgressTimer();
         clearPollTimer();
@@ -471,18 +472,31 @@ export function useTimeCapsule() {
       store.setYear(year);
       store.setSystemState('SCROLLING');
 
-      // 清除之前的防抖定时器
+      // URL sync - immediate
+      history.replaceState(null, '', `/${year}`);
+
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
       }
 
-      // 设置新的防抖定时器
       debounceTimerRef.current = setTimeout(() => {
         fetchCapsule(year);
       }, 500);
     },
     [store, fetchCapsule]
   );
+
+  // Initialize from URL param
+  useEffect(() => {
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+
+    if (initialYear !== undefined) {
+      store.setYear(initialYear);
+      history.replaceState(null, '', `/${initialYear}`);
+      fetchCapsule(initialYear);
+    }
+  }, [initialYear, store, fetchCapsule]);
 
   /**
    * 重试当前年份

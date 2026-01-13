@@ -97,6 +97,7 @@ export type SystemState =
   | 'SCROLLING' // 用户正在快速滑动年份
   | 'CHECKING' // 用户停止，API 查询是否存在
   | 'CONSTRUCTING' // 无缓存，正在生成 (60s 等待)
+  | 'LOADING_MODEL' // API 完成，GLB 模型加载中
   | 'MATERIALIZED' // 模型加载完毕，可查看
   | 'ERROR'; // 异常
 

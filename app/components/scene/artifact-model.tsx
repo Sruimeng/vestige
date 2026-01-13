@@ -68,13 +68,18 @@ function FilterMaterial({ filter }: { filter: MaterialFilter }) {
 function ModelContent({ url, onLoad }: { url: string; onLoad?: () => void }) {
   const { scene } = useGLTF(url);
   const groupRef = useRef<Group>(null);
+  const hasCalledOnLoad = useRef(false);
   const { filter } = useStyleFilter();
 
   // 克隆场景以便修改材质
   const clonedScene = useMemo(() => scene.clone(), [scene]);
 
   useEffect(() => {
-    onLoad?.();
+    if (hasCalledOnLoad.current) return;
+    if (!onLoad) return;
+
+    hasCalledOnLoad.current = true;
+    onLoad();
   }, [onLoad]);
 
   // 轻微浮动动画

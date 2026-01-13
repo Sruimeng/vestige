@@ -47,12 +47,8 @@ export function PhilosophyPanel({ data, onTap, className = '' }: PhilosophyPanel
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className={`glass-panel relative p-4 ${className}`}
+            className={`glass-panel relative p-4 border-t-2 border-t-hud-accent ${className}`}
           >
-            {/* 顶部进度条 */}
-            <div className="absolute left-0 right-0 top-0 h-0.5 overflow-hidden rounded-t-[32px]">
-              <div className="h-full w-full bg-hud-accent" />
-            </div>
 
             {/* 收起按钮 */}
             <button
@@ -108,13 +104,9 @@ export function PhilosophyPanel({ data, onTap, className = '' }: PhilosophyPanel
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 50 }}
       transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
-      className={`hidden sm:block glass-panel relative cursor-pointer p-5 ${className}`}
+      className={`hidden sm:block glass-panel relative cursor-pointer p-5 border-t-2 border-t-hud-accent ${className}`}
       onClick={onTap}
     >
-      {/* 顶部进度条装饰 */}
-      <div className="absolute left-0 right-0 top-0 h-0.5 overflow-hidden rounded-t-[32px]">
-        <div className="h-full w-full bg-hud-accent" />
-      </div>
 
       {/* 年份标题 */}
       <h2 className="mb-2 font-mono text-2xl text-hud-text tracking-widest">{data.year_display}</h2>
