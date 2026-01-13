@@ -3,8 +3,8 @@
  */
 
 import { API_BASE_URL, API_ENDPOINTS, API_TIMEOUT, APP_ID } from '@/constants/api';
-import type { HistoryContext, DailyContext, ApiV5Error } from '@/types/time-capsule';
-import { HistoryContextSchema, DailyContextSchema } from '@/types/time-capsule';
+import type { HistoryContext, DailyContext, FossilContext, ApiV5Error } from '@/types/time-capsule';
+import { HistoryContextSchema, DailyContextSchema, FossilContextSchema } from '@/types/time-capsule';
 
 class ContextApiError extends Error {
   constructor(
@@ -59,6 +59,15 @@ export async function fetchDaily(date?: string): Promise<DailyContext> {
   if (date) url += `?date=${date}`;
   const response = await fetchWithTimeout(url);
   return handleResponse(response, DailyContextSchema);
+}
+
+/**
+ * 获取未来化石 Context
+ */
+export async function fetchFossil(year: number): Promise<FossilContext> {
+  const url = `${API_BASE_URL}${API_ENDPOINTS.FOSSIL(year)}`;
+  const response = await fetchWithTimeout(url);
+  return handleResponse(response, FossilContextSchema);
 }
 
 export { ContextApiError };

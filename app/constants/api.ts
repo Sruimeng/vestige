@@ -23,6 +23,7 @@ export const MAX_POLL_DURATION = 300000;
 // API 端点
 export const API_ENDPOINTS = {
   HISTORY: (year: number) => `/api/context/history/${year}`,
+  FOSSIL: (year: number) => `/api/context/fossil/${year}`,
   DAILY: '/api/context/daily',
   MIX: '/api/context/mix',
   FORGE_CREATE: '/api/forge/create',

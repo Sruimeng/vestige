@@ -162,6 +162,13 @@ export const NewsItemSchema = z.object({
   content: z.string(),
 });
 
+/** v5 Fossil 事件 Zod Schema */
+export const FossilEventSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  category: z.enum(['politics', 'technology', 'culture', 'economy', 'science', 'ritual', 'unknown']),
+});
+
 /** v5 History Context (替代 TimeCapsuleData) */
 export interface HistoryContext {
   context_id: string;
@@ -204,6 +211,42 @@ export const DailyContextSchema = z.object({
   philosophy: z.string(),
   suggested_prompt: z.string(),
   keywords: z.array(z.string()),
+});
+
+/** Fossil 预测 (后端返回结构) */
+export interface FossilPrediction {
+  title: string;
+  description: string;
+}
+
+/** v5 Fossil Context (未来化石) - 匹配后端 */
+export interface FossilContext {
+  context_id: string;
+  year: number;
+  predictions: FossilPrediction[];
+  symbols: string[];
+  synthesis: string;
+  philosophy: string;
+  archaeologist_report: string;
+  suggested_prompt: string;
+}
+
+/** Fossil Prediction Zod Schema */
+export const FossilPredictionSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+});
+
+/** v5 Fossil Context Zod Schema */
+export const FossilContextSchema = z.object({
+  context_id: z.string(),
+  year: z.number(),
+  predictions: z.array(FossilPredictionSchema),
+  symbols: z.array(z.string()),
+  synthesis: z.string(),
+  philosophy: z.string(),
+  archaeologist_report: z.string(),
+  suggested_prompt: z.string(),
 });
 
 /** v5 Context 联合类型 */

@@ -15,9 +15,10 @@ import type {
   TimeCapsuleData,
   CapsuleData,
   FutureFossilsData,
+  FossilContext,
 } from '@/types/time-capsule';
 import { YEAR_MAX, YEAR_MIN } from '@/types/time-capsule';
-import { fetchHistory, fetchDaily } from '@/api/context';
+import { fetchHistory, fetchFossil } from '@/api/context';
 import { createForge, pollForgeUntilDone, getForgeAssets } from '@/api/forge';
 
 // ============================================================================
@@ -104,23 +105,26 @@ function historyToLegacy(ctx: { year: number; year_display: string; events: Time
   };
 }
 
-function dailyToLegacy(ctx: { date: string; news: { title: string; content: string }[]; philosophy: string; suggested_prompt: string; keywords: string[] }, modelUrl: string): FutureFossilsData {
-  const year = new Date(ctx.date).getFullYear();
+function fossilToLegacy(ctx: FossilContext, modelUrl: string): FutureFossilsData {
+  const yearDisplay = ctx.year < 0
+    ? `公元前 ${Math.abs(ctx.year)} 年`
+    : `公元 ${ctx.year} 年`;
 
   return {
-    year,
-    year_display: `公元 ${year} 年`,
-    mode: 'history',
-    events: ctx.news.map((n) => ({
-      title: n.title,
-      description: n.content,
-      category: 'culture' as const,
+    year: ctx.year,
+    year_display: yearDisplay,
+    mode: 'misread',
+    events: ctx.predictions.map((p) => ({
+      title: p.title,
+      description: p.description,
+      category: 'unknown' as const,
     })),
-    symbols: ctx.keywords,
-    synthesis: ctx.suggested_prompt.slice(0, 50),
+    symbols: ctx.symbols,
+    synthesis: ctx.synthesis,
     philosophy: ctx.philosophy,
     model_url: modelUrl,
     generated_at: new Date().toISOString(),
+    archaeologist_report: ctx.archaeologist_report,
   };
 }
 
@@ -182,10 +186,10 @@ export function useTimeCapsule(initialYear?: number) {
           store.setSystemState('CONSTRUCTING');
           data = await simulateApiCall(targetYear, store.setProgress, abortController.signal);
         } else {
-          const isDaily = targetYear >= getCurrentYear();
+          const isFuture = targetYear >= getCurrentYear();
 
-          if (isDaily) {
-            const ctx = await fetchDaily();
+          if (isFuture) {
+            const ctx = await fetchFossil(targetYear);
 
             // 检查缓存
             const cached = await getForgeAssets(ctx.context_id);
@@ -193,7 +197,7 @@ export function useTimeCapsule(initialYear?: number) {
 
             if (completedAsset) {
               const modelUrl = processModelUrl(completedAsset.model_url || '');
-              data = dailyToLegacy(ctx, modelUrl);
+              data = fossilToLegacy(ctx, modelUrl);
             } else {
               store.setSystemState('CONSTRUCTING');
               store.setProgress(10);
@@ -208,7 +212,7 @@ export function useTimeCapsule(initialYear?: number) {
 
               clearProgressTimer();
               const modelUrl = processModelUrl(status.model_url || '');
-              data = dailyToLegacy(ctx, modelUrl);
+              data = fossilToLegacy(ctx, modelUrl);
             }
           } else {
             const ctx = await fetchHistory(targetYear);
