@@ -29,6 +29,7 @@ export const API_ENDPOINTS = {
   FORGE_CREATE: '/api/forge/create',
   FORGE_STATUS: (id: string) => `/api/forge/status/${id}`,
   FORGE_ASSETS: '/api/forge/assets',
+  PROXY_MODEL: '/api/proxy-model',
 } as const;
 
 /**
@@ -72,4 +73,34 @@ export const FALLBACK_MODEL_URL =
 export function processModelUrl(url: string): string {
   if (!url) return FALLBACK_MODEL_URL;
   return url.replace(/^http:/, 'https:');
+}
+
+/**
+ * 模型 URL 回退加载策略
+ * 1. 优先尝试 alist_url (中国 CDN)
+ * 2. 失败则回退到 tripo_url (通过后端代理)
+ */
+export async function fetchModelWithFallback(
+  alistUrl: string | null,
+  tripoUrl: string | null,
+): Promise<string> {
+  if (!alistUrl && !tripoUrl) return '';
+
+  if (alistUrl) {
+    try {
+      const res = await fetch(alistUrl, {
+        method: 'HEAD',
+        signal: AbortSignal.timeout(5000),
+      });
+      if (res.ok) return alistUrl;
+    } catch {
+      // alist failed, try fallback
+    }
+  }
+
+  if (tripoUrl) {
+    return `${API_BASE_URL}${API_ENDPOINTS.PROXY_MODEL}?url=${encodeURIComponent(tripoUrl)}`;
+  }
+
+  return alistUrl || '';
 }

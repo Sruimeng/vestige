@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import {
   MAX_POLL_DURATION,
-  processModelUrl,
+  fetchModelWithFallback,
   USE_MOCK,
   getCurrentYear,
 } from '@/constants/api';
@@ -193,10 +193,10 @@ export function useTimeCapsule(initialYear?: number) {
 
             // 检查缓存
             const cached = await getForgeAssets(ctx.context_id);
-            const completedAsset = cached.assets.find((a) => a.status === 'completed' && a.model_url);
+            const completedAsset = cached.assets.find((a) => a.status === 'completed' && (a.alist_url || a.tripo_url));
 
             if (completedAsset) {
-              const modelUrl = processModelUrl(completedAsset.model_url || '');
+              const modelUrl = await fetchModelWithFallback(completedAsset.alist_url, completedAsset.tripo_url);
               data = fossilToLegacy(ctx, modelUrl);
             } else {
               store.setSystemState('CONSTRUCTING');
@@ -211,7 +211,7 @@ export function useTimeCapsule(initialYear?: number) {
               );
 
               clearProgressTimer();
-              const modelUrl = processModelUrl(status.model_url || '');
+              const modelUrl = await fetchModelWithFallback(status.alist_url, status.tripo_url);
               data = fossilToLegacy(ctx, modelUrl);
             }
           } else {
@@ -219,10 +219,10 @@ export function useTimeCapsule(initialYear?: number) {
 
             // 检查缓存
             const cached = await getForgeAssets(ctx.context_id);
-            const completedAsset = cached.assets.find((a) => a.status === 'completed' && a.model_url);
+            const completedAsset = cached.assets.find((a) => a.status === 'completed' && (a.alist_url || a.tripo_url));
 
             if (completedAsset) {
-              const modelUrl = processModelUrl(completedAsset.model_url || '');
+              const modelUrl = await fetchModelWithFallback(completedAsset.alist_url, completedAsset.tripo_url);
               data = historyToLegacy(ctx, modelUrl);
             } else {
               store.setSystemState('CONSTRUCTING');
@@ -237,7 +237,7 @@ export function useTimeCapsule(initialYear?: number) {
               );
 
               clearProgressTimer();
-              const modelUrl = processModelUrl(status.model_url || '');
+              const modelUrl = await fetchModelWithFallback(status.alist_url, status.tripo_url);
               data = historyToLegacy(ctx, modelUrl);
             }
           }

@@ -287,7 +287,9 @@ export interface ForgeCreateResponse {
 export interface ForgeStatusResponse {
   task_id: string;
   status: ForgeStatus;
-  model_url: string | null;
+  tripo_url: string | null;
+  alist_url: string | null;
+  selected_url: string | null;
   error_message: string | null;
   progress_percent: number;
 }
@@ -296,7 +298,9 @@ export interface ForgeStatusResponse {
 export const ForgeStatusSchema = z.object({
   task_id: z.string(),
   status: z.enum(['pending', 'processing', 'completed', 'failed']),
-  model_url: z.string().nullable(),
+  tripo_url: z.string().nullable(),
+  alist_url: z.string().nullable(),
+  selected_url: z.string().nullable(),
   error_message: z.string().nullable(),
   progress_percent: z.number(),
 });
@@ -312,7 +316,9 @@ export const ForgeCreateResponseSchema = z.object({
 export interface ForgeAsset {
   task_id: string;
   status: ForgeStatus;
-  model_url: string | null;
+  tripo_url: string | null;
+  alist_url: string | null;
+  selected_url: string | null;
 }
 
 /** Forge Assets 响应 */
@@ -325,7 +331,9 @@ export interface ForgeAssetsResponse {
 export const ForgeAssetSchema = z.object({
   task_id: z.string(),
   status: z.enum(['pending', 'processing', 'completed', 'failed']),
-  model_url: z.string().nullable(),
+  tripo_url: z.string().nullable(),
+  alist_url: z.string().nullable(),
+  selected_url: z.string().nullable(),
 });
 
 /** Forge Assets 响应 Zod Schema */
