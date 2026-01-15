@@ -29,7 +29,6 @@ export const API_ENDPOINTS = {
   FORGE_CREATE: '/api/forge/create',
   FORGE_STATUS: (id: string) => `/api/forge/status/${id}`,
   FORGE_ASSETS: '/api/forge/assets',
-  PROXY_MODEL: '/api/proxy-model',
 } as const;
 
 /**
@@ -68,42 +67,9 @@ export const FALLBACK_MODEL_URL =
 
 /**
  * 处理模型 URL
+ * 后端已通过 CF Worker 代理，前端直接使用返回的 URL
  */
 export function processModelUrl(url: string): string {
   if (!url) return FALLBACK_MODEL_URL;
-
-  const httpsUrl = url.replace(/^http:/, 'https:');
-
-  if (httpsUrl.includes('tripo3d.com')) {
-    return `${API_BASE_URL}${API_ENDPOINTS.PROXY_MODEL}?url=${encodeURIComponent(httpsUrl)}`;
-  }
-
-  return httpsUrl;
-}
-
-/**
- * 判断 URL 是否需要代理（需要带 X-App-ID header）
- */
-export function isProxyUrl(url: string): boolean {
-  return url.startsWith(API_BASE_URL) && url.includes(API_ENDPOINTS.PROXY_MODEL);
-}
-
-/**
- * 下载模型为 Blob URL（用于需要认证的代理请求）
- */
-export async function fetchModelAsBlob(url: string): Promise<string> {
-  if (!isProxyUrl(url)) {
-    return url;
-  }
-
-  const response = await fetch(url, {
-    headers: { 'X-App-ID': APP_ID },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch model: ${response.status}`);
-  }
-
-  const blob = await response.blob();
-  return URL.createObjectURL(blob);
+  return url.replace(/^http:/, 'https:');
 }

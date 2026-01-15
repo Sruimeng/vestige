@@ -4,11 +4,10 @@
 
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { Suspense, useEffect, useRef, useMemo, useState } from 'react';
+import { Suspense, useEffect, useRef, useMemo } from 'react';
 import * as THREE from 'three';
 import type { Group, Mesh } from 'three';
 import { useStyleFilter } from '@/components/post-processing';
-import { fetchModelAsBlob } from '@/constants/api';
 import {
   BlueprintMaterial,
   HalftoneMaterial,
@@ -127,33 +126,9 @@ function ModelContent({ url, onLoad }: { url: string; onLoad?: () => void }) {
 }
 
 function ModelLoader({ url, onLoad, onError }: ArtifactModelProps) {
-  const [blobUrl, setBlobUrl] = useState<string | null>(null);
-  const [error, setError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    let revoke: string | null = null;
-
-    fetchModelAsBlob(url)
-      .then((result) => {
-        setBlobUrl(result);
-        if (result !== url) revoke = result;
-      })
-      .catch((err) => {
-        setError(err);
-        onError?.(err);
-      });
-
-    return () => {
-      if (revoke) URL.revokeObjectURL(revoke);
-    };
-  }, [url, onError]);
-
-  if (error) return null;
-  if (!blobUrl) return null;
-
   return (
     <Suspense fallback={null}>
-      <ModelContent url={blobUrl} onLoad={onLoad} />
+      <ModelContent url={url} onLoad={onLoad} />
     </Suspense>
   );
 }
@@ -166,8 +141,6 @@ export function ArtifactModel({ url, onLoad, onError }: ArtifactModelProps) {
 
 export function preloadModel(url: string) {
   if (url) {
-    fetchModelAsBlob(url).then((blobUrl) => {
-      useGLTF.preload(blobUrl);
-    });
+    useGLTF.preload(url);
   }
 }
